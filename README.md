@@ -18,10 +18,10 @@
 
 ### The target user is someone living/staying in Vancouver who is interested in going snowboarding.
 
-### I love to go snowboarding, but I've always found it very time-consuming to go to the website of each separate mountain resort to find out their prices and other information. This gets even more complicated when you are making plans with a group of people, each person with separate needs and preferences. Having one centralized application that allows you to filter by various preferences would greatly simplify this task.
+### *I love to go snowboarding, but I've always found it very time-consuming to go to the website of each separate mountain resort to find out their prices and other information. This gets even more complicated when you are making plans with a group of people, each person with separate needs and preferences. Having one centralized application that allows you to filter by various preferences will greatly simplify this task.*
 
 ## User Stories
 - As a user, I want to be able to search for a ski resort based on the cheapest lift ticket price
-- As a user, I want to be able to see whether a ski resorts offers gear rental options
+- As a user, I want to be able to see whether a ski resort offers gear rental options
 - As a user, I want to be able to enter and save my home address in the application
 - As a user, I want to be able to see the driving distance from my home to the ski resort
