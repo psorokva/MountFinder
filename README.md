@@ -23,5 +23,5 @@
 ## User Stories
 - As a user, I want to be able to search for a ski resort based on the cheapest lift ticket price
 - As a user, I want to be able to see whether a ski resort offers gear rental options
-- As a user, I want to be able to enter and save my home address in the application
+- As a user, I want to be able to select my home area in the application (example: Vancouver, Burnaby, etc.)
 - As a user, I want to be able to see the driving distance from my home to the ski resort
