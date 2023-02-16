@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests Mountain class.
+ */
 class MountainTest {
     private Mountain m1;
     private Mountain m2;
@@ -14,13 +17,13 @@ class MountainTest {
     public void setUp() {
         m1 = new Mountain("Cypress");
         m2 = new Mountain("Seymour");
-        user1 = new User("John");
+        user1 = new User();
     }
 
     @Test
-    public void testConstructor() {
-        assertEquals("Cypress", m1.getName());
-        assertEquals("Seymour", m2.getName());
+    public void testMtnConstructor() {
+        assertEquals("Cypress", m1.getMtnName());
+        assertEquals("Seymour", m2.getMtnName());
     }
 
     @Test
@@ -30,43 +33,50 @@ class MountainTest {
     }
 
     @Test
-    public void rentalsAvailableTest() {
-        assertFalse(m1.areRentalsAvailable());
-        m1.rentalsAvailable();
-        assertTrue(m1.areRentalsAvailable());
+    public void rentalsAvailabilityTest() {
+        assertEquals("not available", m1.rentalsAvailability());
+        m1.makeRentalsAvailable();
+        assertEquals("available", m1.rentalsAvailability());
+        m1.makeRentalsNotAvailable();
+        assertEquals("not available", m1.rentalsAvailability());
     }
 
-    @Test
-    public void rentalsNotAvailableTest() {
-        m1.rentalsAvailable();
-        assertTrue(m1.areRentalsAvailable());
-        m1.rentalsNotAvailable();
-        assertFalse(m1.areRentalsAvailable());
-    }
+//    @Test Todo delete if coverage is fine
+//    public void rentalsNotAvailableTest() {
+//        m1.makeRentalsAvailable();
+//        //assertTrue(m1.rentalsNotAvailable());
+//        m1.makeRentalsNotAvailable();
+//        //assertFalse(m1.rentalsNotAvailable());
+//    }
 
     @Test
     public void addLiftPriceTest() {
-        m1.addLiftPrice(950);
-        assertEquals(950, m1.getLiftPrice());
-        m1.addLiftPrice(850);
-        assertEquals(850, m1.getLiftPrice());
+        m1.addLiftPrice(95);
+        assertEquals(95, m1.getLiftPrice());
+        m1.addLiftPrice(1);
+        assertEquals(1, m1.getLiftPrice());
     }
 
     @Test
-    public void checkDistanceTest() throws Exception {
-        assertEquals(27.9f, m1.checkDistance("Downtown"));
-        assertEquals(38.7f, m1.checkDistance("UBC"));
-        assertEquals(30.6f, m1.checkDistance("Vancouver"));
-        assertEquals(53.3f, m1.checkDistance("Richmond"));
-        assertEquals(39.0f, m1.checkDistance("Burnaby"));
-        assertEquals(60.0f, m1.checkDistance("Surrey"));
-        assertEquals(26.1f, m1.checkDistance("North Vancouver"));
+    public void checkDistanceCypressTest() throws Exception {
+        assertEquals(39.9f, m1.checkDistance(m1, "UBC"));
+        assertEquals(30.8f, m1.checkDistance(m1, "Vancouver"));
+        assertEquals(54.8f, m1.checkDistance(m1, "Richmond"));
     }
+
+    @Test
+    public void checkDistanceSeymourTest() throws Exception {
+        assertEquals(37.1f, m2.checkDistance(m2, "UBC"));
+        assertEquals(26.4f, m2.checkDistance(m2, "Vancouver"));
+        assertEquals(39.2f, m2.checkDistance(m2, "Richmond"));
+    }
+
+    //to test exception - use try catch with the option "failure" that would say "did not catch error"
 
     @Test
     public void checkDistanceFromHomeTest() throws Exception {
         user1.setUserHomeCity("UBC");
-        assertEquals(38.7f, m1.checkDistance(user1.getUserHomeCity()));
+        assertEquals(39.9f, m1.checkDistance(m1, user1.getUserHomeCity()));
     }
 
 
