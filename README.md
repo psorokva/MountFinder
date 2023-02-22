@@ -21,7 +21,7 @@
 ### *I love to go snowboarding, but I've always found it very time-consuming to go to the website of each separate mountain resort to find out their prices and other information. This gets even more complicated when you are making plans with a group of people, each person with separate needs and preferences. Having one centralized application that allows you to filter by various preferences will greatly simplify this task.*
 
 ## User Stories
-- As a user, I want to be able to search for a ski resort based on the cheapest lift ticket price
+- As a user, I want to be able to add new mountains/ski resort to the list
+- As a user, I want to be able to compare ski resort lift ticket price
 - As a user, I want to be able to see whether a ski resort offers gear rental options
-- As a user, I want to be able to select my home area in the application (example: Vancouver, Burnaby, etc.)
-- As a user, I want to be able to see the driving distance from my home to the ski resort
+- As a user, I want to be able to see the driving distance from my home (example: UBC) to the ski resort

@@ -1,28 +1,32 @@
 package model;
 
+import java.util.ArrayList;
+
 /**
- * This class creates a mountain with name, height, lift price, gear rental and distance fields.
- * The distance can be set relative to a specific city (Vancouver, Richmond, UBC).
+ * This class creates a mountain with:
+ * name,
+ * lift price (in dollars),
+ * gear rental (available or not),
+ * distances fields.
+ * The distances are set through Distance class relative to a specific city (Vancouver, Richmond, UBC).
  */
 public class Mountain {
     private final String name;
-    private int height;
     private double liftPrice;             // in dollars
-    private boolean gearRental;        // true if gear rental available
-    private double distance;           // variable for distance
+    private boolean gearRental;           // true if gear rental available
+    private ArrayList<Distance> distances;
 
 
     // REQUIRES: name has a non-zero length
     // EFFECTS: constructs a mountain having a name
     public Mountain(String mtnName) {
         this.name = mtnName;
+        this.distances = new ArrayList<>();
     }
 
-    // REQUIRES: height > 0
-    // MODIFIES: this
-    // EFFECTS: adds value for the height of the mountain in meters
-    public void setHeight(int height) {
-        this.height = height;
+    // EFFECTS: returns mountain name
+    public String getMtnName() {
+        return this.name;
     }
 
     // MODIFIES: this
@@ -55,50 +59,29 @@ public class Mountain {
         this.liftPrice = liftPrice;
     }
 
-    // REQUIRES: city is one of: UBC, Vancouver, Richmond
-    // MODIFIES: this
-    // EFFECTS: returns distance in km from the given city to the chosen mountain
-    public double checkDistance(Mountain mtn, String city) throws Exception {
-        if (city.equals("UBC") && mtn.getMtnName().equals("Cypress")) {
-            return distance = 39.9f;
-        } else if (city.equals("UBC") && mtn.getMtnName().equals("Seymour")) {
-            return distance = 37.1f;
-        } else if (city.equals("Vancouver") && mtn.getMtnName().equals("Cypress")) {
-            return distance = 30.8f;
-        } else if (city.equals("Vancouver") && mtn.getMtnName().equals("Seymour")) {
-            return distance = 26.4f;
-        } else if (city.equals("Richmond") && mtn.getMtnName().equals("Cypress")) {
-            return distance = 54.8f;
-        } else if (city.equals("Richmond") && mtn.getMtnName().equals("Seymour")) {
-            return distance = 39.2f;
-        }
-        throw new Exception("Unknown value. Select a valid city");
-    }
-
-    // EFFECTS: returns mountain name
-    public String getMtnName() {
-        return this.name;
-    }
-
-    // EFFECTS: returns mountain height
-    public int getHeight() {
-        return this.height;
-    }
-
     // EFFECTS: returns lift ticket price in dollars
     public double getLiftPrice() {
         return this.liftPrice;
     }
 
-    // EFFECTS: returns the distance to the mountain
-    public double getDistance() {
-        return distance;
+    // REQUIRES: City is one of: Vancouver, Richmond, UBC
+    //           distance is > 0
+    // MODIFIES: this
+    // EFFECTS: sets new distance value for the specified city
+    //          and adds it to distances list for this mountain
+    public void setDistance(String city, double distance) {
+        Distance d1 = new Distance(city, distance);
+        distances.add(d1);
     }
 
-    // REQUIRES: distance is > 0
-    // MODIFIES: this
-    // EFFECTS: sets a distance to the mountain
-    public void setDistance(double distance) {
-        this.distance = distance;
+    // REQUIRES: City is one of: Vancouver, Richmond, UBC
+    // EFFECTS: returns the distance to the mountain
+    public double getDistance(String city) {
+        for (Distance d : distances) {
+            if (d.getCity().equals(city)) {
+                return d.getDistanceFromCity();
+            }
+        }
+        return 0;
     }
 }

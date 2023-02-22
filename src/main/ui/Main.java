@@ -1,10 +1,10 @@
 package ui;
 
 /**
-* This main class starts the Mountain Finder application
- *  */
+ * This main class starts the Mountain Finder application
+ */
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         new MountFinderApp();
     }
 }

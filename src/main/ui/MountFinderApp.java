@@ -20,19 +20,20 @@ public class MountFinderApp {
     private User user;
 
     // EFFECTS: runs the application
-    public MountFinderApp() throws Exception {
+    public MountFinderApp() {
         runApp();
     }
 
     // MODIFIES: this
     // EFFECTS: processes user input
-    private void runApp() throws Exception {
+    private void runApp() {
         boolean keepGoing = true;
         String command;
 
         init();
 
         while (keepGoing) {
+            System.out.print("Choice: ");
             command = input.next();
             command = command.toLowerCase();
 
@@ -45,9 +46,18 @@ public class MountFinderApp {
         System.out.println("\nGoodbye!");
     }
 
+    // EFFECTS: initializes the values
+    private void init() {
+        user = new User();
+        displayStartMenu();
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
+        mtnList = new MountainList();
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand1(String command) throws Exception {
+    private void processCommand1(String command) {
         switch (command) {
             case "v":
                 user.setUserHomeCity("Vancouver");
@@ -70,7 +80,9 @@ public class MountFinderApp {
         }
     }
 
-    private void processCommand2(String command) throws Exception {
+    // MODIFIES: this
+    // EFFECTS: processes user command
+    private void processCommand2(String command) {
         switch (command) {
             case "n":
                 handleAddingNewMountain();
@@ -87,18 +99,28 @@ public class MountFinderApp {
         }
     }
 
-    private void loadCurrentMtnList() throws Exception {
+    // MODIFIES: this
+    // EFFECTS: loads current mountain list and collects user selection
+    private void loadCurrentMtnList() {
         System.out.println("\nSelect a mountain to browse:");
         for (int i = 0; i < mtnList.size(); i++) {
-            Mountain currentMtn = mtnList.get(i);
+            Mountain currentMtn = mtnList.getMtnAtIndex(i);
             System.out.println("\t" + i + " -> " + currentMtn.getMtnName());
         }
+        System.out.print("Choice: ");
         String selection = input.next();
         int index = Integer.parseInt(selection);
-        Mountain selectedMtn = mtnList.get(index);
+        while (index >= mtnList.size()) {
+            System.out.println("Selection not valid...");
+            selection = input.next();
+            index = Integer.parseInt(selection);
+        }
+        Mountain selectedMtn = mtnList.getMtnAtIndex(index);
         browseMountain(selectedMtn.getMtnName());
     }
 
+    // MODIFIES: this, MountainList
+    // EFFECTS: handles adding new mountain to the list
     private void handleAddingNewMountain() {
         addNewMountainNameMenu();
         String mountainName = input.next();
@@ -113,6 +135,10 @@ public class MountFinderApp {
         displayMtnSelectionMenu();
     }
 
+    // MODIFIES: Mountain, MountainList
+    // EFFECTS: adds value for lift price for new mountain in $
+    //          if input includes non-numeric values - removes those values
+    //          if remainder is an empty string - asks for new input that is a number
     private void addNewMtnLiftPrice(Mountain newMountain) {
         addNewMountainPriceMenu();
         String inputValue = input.next();
@@ -127,11 +153,13 @@ public class MountFinderApp {
         System.out.println("Lift price is $" + liftPrice);
     }
 
+    // MODIFIES: Mountain, MountainList
+    // EFFECTS: sets rental availability for new mountain
     private void addNewMtnRentals(Mountain newMountain) {
         addNewMountainRentalsMenu();
         String command = input.next();
         while (!command.equalsIgnoreCase("a")
-            && !command.equalsIgnoreCase("f")) {
+                && !command.equalsIgnoreCase("f")) {
             System.out.println("Invalid option");
             command = input.next();
         }
@@ -143,8 +171,13 @@ public class MountFinderApp {
         System.out.println(newMountain.rentalsAvailability());
     }
 
+    // MODIFIES: Mountain, MountainList, Distance
+    // EFFECTS: sets distance from user's selected home city to the mountain
+    //          if input includes non-numeric values - removes those values
+    //          if remainder is an empty string - asks for new input that is a number
     private void addNewMtnDistanceFromHome(Mountain newMountain) {
         addNewMountainDistanceMenu();
+        String city = user.getUserHomeCity();
         String inputValue = input.next();
         inputValue = inputValue.replaceAll("[^\\d.]", "");
         while (inputValue.equals("")) {
@@ -153,17 +186,8 @@ public class MountFinderApp {
             inputValue = inputValue.replaceAll("[^\\d.]", "");
         }
         double distance = Double.parseDouble(inputValue);
-        newMountain.setDistance(distance);
-        System.out.println("The distance is " + distance + " km from " + user.getUserHomeCity());
-    }
-
-    // EFFECTS: initializes the values
-    private void init() {
-        user = new User();
-        displayStartMenu();
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-        mtnList = new MountainList();
+        newMountain.setDistance(user.getUserHomeCity(), distance);
+        System.out.println("The distance is " + newMountain.getDistance(city) + " km from " + city);
     }
 
     // EFFECTS: displays menu of city options to user
@@ -176,7 +200,7 @@ public class MountFinderApp {
         System.out.println("\tq -> quit");
     }
 
-    // EFFECTS: displays menu of mountain options to user
+    // EFFECTS: displays main menu of options to user
     private void displayMtnSelectionMenu() {
         System.out.println("\nSelected home city: " + user.getUserHomeCity());
         System.out.println("\th -> Change home city");
@@ -187,31 +211,42 @@ public class MountFinderApp {
         System.out.println("\tq -> Quit");
     }
 
+    // EFFECTS: displays prompt text for adding new mountain name
     private void addNewMountainNameMenu() {
-        System.out.println("Enter the name of the mountain:");
+        System.out.print("Enter the name of the mountain: ");
     }
 
+    // EFFECTS: displays prompt text for adding new mountain lift price
     private void addNewMountainPriceMenu() {
-        System.out.println("Enter the lift ticket price:");
+        System.out.print("Enter the lift ticket price: ");
     }
 
+    // EFFECTS: displays prompt text for adding new mountain rental availability
     private void addNewMountainRentalsMenu() {
         System.out.println("Select rental availability:");
         System.out.println("\ta -> Rentals are available");
         System.out.println("\tf -> Rentals are not available");
+        System.out.print("Choice: ");
     }
 
+    // EFFECTS: displays prompt text for adding new mountain distance from home
     private void addNewMountainDistanceMenu() {
-        System.out.println("Enter distance in km from " + user.getUserHomeCity());
+        System.out.print("Enter distance in km from " + user.getUserHomeCity() + ": ");
     }
 
-    private void browseMountain(String mountainName) throws Exception {
+    // EFFECTS: displays all information for selected mountain
+    //          if user changed home city after adding new mountain,
+    //          asks to enter distance from this home city to the mountain
+    private void browseMountain(String mountainName) {
         Mountain mountain = mtnList.getMtnByName(mountainName);
+        if (mountain.getDistance(user.getUserHomeCity()) == 0) {
+            addNewMtnDistanceFromHome(mountain);
+        }
         System.out.println(mountainName + " mountain:");
         System.out.println("\tLift ticket price: $" + mountain.getLiftPrice());
         System.out.println("\t" + mountain.rentalsAvailability());
         System.out.print("\tDistance from home is ");
-        System.out.printf("%.1f", mountain.checkDistance(mountain, user.getUserHomeCity()));
+        System.out.printf("%.1f", mountain.getDistance(user.getUserHomeCity()));
         System.out.println(" km");
         System.out.println("\tb -> Select another mountain");
         System.out.println("\th -> Change home city");

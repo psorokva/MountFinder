@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * This class creates a list of mountains.
  * To provide some default information to a user this list already includes 2 mountains
- * with all their fields populated with information.
+ * (Cypress and Seymour) with all their fields populated with information.
  * User can create and add new mountains to this list, but this information will not be stored
  * after the user quits application.
  */
@@ -23,24 +23,24 @@ public class MountainList {
         mtnList.add(cypress);
         mtnList.add(seymour);
 
-        cypress.setHeight(900);
         cypress.addLiftPrice(80);
         cypress.makeRentalsAvailable();
+        cypress.setDistance("Vancouver", 30.8f);
+        cypress.setDistance("Richmond", 54.8f);
+        cypress.setDistance("UBC", 39.9f);
 
-        seymour.setHeight(1449);
         seymour.addLiftPrice(70);
         seymour.makeRentalsNotAvailable();
+        seymour.setDistance("Vancouver", 26.4f);
+        seymour.setDistance("Richmond", 39.2f);
+        seymour.setDistance("UBC", 37.1f);
     }
 
+    // REQUIRES: mountain is not already in the list
     // MODIFIES: this
     // EFFECTS: adds given mountain to existing list
     public void addMountain(Mountain m) {
         this.mtnList.add(m);
-    }
-
-    // EFFECTS: returns a list of mountains currently in the list
-    public List<Mountain> getMtnList() {
-        return mtnList;
     }
 
     // REQUIRES: mountain list is not empty
@@ -55,11 +55,13 @@ public class MountainList {
         return null;
     }
 
+    // EFFECTS: returns the size of Mountain List
     public int size() {
-        return mtnList.size();
+        return this.mtnList.size();
     }
 
-    public Mountain get(int i) {
-        return mtnList.get(i);
+    // EFFECTS: returns Mountain at position i from the Mountain List
+    public Mountain getMtnAtIndex(int i) {
+        return this.mtnList.get(i);
     }
 }

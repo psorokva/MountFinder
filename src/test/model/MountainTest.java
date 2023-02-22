@@ -27,56 +27,44 @@ class MountainTest {
     }
 
     @Test
-    public void setHeightTest() {
-        m1.setHeight(900);
-        assertEquals(900, m1.getHeight());
-    }
-
-    @Test
     public void rentalsAvailabilityTest() {
-        assertEquals("not available", m1.rentalsAvailability());
+        assertEquals("Rentals are not available", m1.rentalsAvailability());
         m1.makeRentalsAvailable();
-        assertEquals("available", m1.rentalsAvailability());
+        assertEquals("Rentals are available", m1.rentalsAvailability());
         m1.makeRentalsNotAvailable();
-        assertEquals("not available", m1.rentalsAvailability());
+        assertEquals("Rentals are not available", m1.rentalsAvailability());
     }
-
-//    @Test Todo delete if coverage is fine
-//    public void rentalsNotAvailableTest() {
-//        m1.makeRentalsAvailable();
-//        //assertTrue(m1.rentalsNotAvailable());
-//        m1.makeRentalsNotAvailable();
-//        //assertFalse(m1.rentalsNotAvailable());
-//    }
 
     @Test
     public void addLiftPriceTest() {
         m1.addLiftPrice(95);
         assertEquals(95, m1.getLiftPrice());
-        m1.addLiftPrice(1);
-        assertEquals(1, m1.getLiftPrice());
+        m1.addLiftPrice(1.34);
+        assertEquals(1.34, m1.getLiftPrice());
     }
 
     @Test
-    public void checkDistanceCypressTest() throws Exception {
-        assertEquals(39.9f, m1.checkDistance(m1, "UBC"));
-        assertEquals(30.8f, m1.checkDistance(m1, "Vancouver"));
-        assertEquals(54.8f, m1.checkDistance(m1, "Richmond"));
+    public void setDistanceTest() {
+        m1.setDistance("Vancouver", 1);
+        m1.setDistance("Richmond", 56.5);
+        m1.setDistance("UBC", 788.5);
+        assertEquals(1, m1.getDistance("Vancouver"));
+        assertEquals(56.5, m1.getDistance("Richmond"));
+        assertEquals(788.5, m1.getDistance("UBC"));
     }
 
     @Test
-    public void checkDistanceSeymourTest() throws Exception {
-        assertEquals(37.1f, m2.checkDistance(m2, "UBC"));
-        assertEquals(26.4f, m2.checkDistance(m2, "Vancouver"));
-        assertEquals(39.2f, m2.checkDistance(m2, "Richmond"));
+    public void distanceNotSet() {
+        m1.setDistance("Richmond", 56.5);
+        assertEquals(0, m1.getDistance("UBC"));
     }
 
-    //to test exception - use try catch with the option "failure" that would say "did not catch error"
-
     @Test
-    public void checkDistanceFromHomeTest() throws Exception {
+    public void checkDistanceFromUserHome() {
+        m2.setDistance("Vancouver", 130);
+        m2.setDistance("UBC", 230);
         user1.setUserHomeCity("UBC");
-        assertEquals(39.9f, m1.checkDistance(m1, user1.getUserHomeCity()));
+        assertEquals(230, m2.getDistance(user1.getUserHomeCity()));
     }
 
 
