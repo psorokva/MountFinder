@@ -7,7 +7,7 @@ package model;
 public class Mountain {
     private final String name;
     private int height;
-    private int liftPrice;             // in dollars
+    private double liftPrice;             // in dollars
     private boolean gearRental;        // true if gear rental available
     private double distance;           // variable for distance
 
@@ -41,17 +41,17 @@ public class Mountain {
     public String rentalsAvailability() {
         String answer;
         if (!this.gearRental) {
-            answer = "not available";
+            answer = "Rentals are not available";
             return answer;
         }
-        answer = "available";
+        answer = "Rentals are available";
         return answer;
     }
 
     // REQUIRES: liftPrice > 0
     // MODIFIES: this
     // EFFECTS: adds value for the lift price in dollars
-    public void addLiftPrice(int liftPrice) {
+    public void addLiftPrice(double liftPrice) {
         this.liftPrice = liftPrice;
     }
 
@@ -86,7 +86,7 @@ public class Mountain {
     }
 
     // EFFECTS: returns lift ticket price in dollars
-    public int getLiftPrice() {
+    public double getLiftPrice() {
         return this.liftPrice;
     }
 

@@ -3,10 +3,6 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -32,8 +28,8 @@ public class MountainListTest {
 
     @Test
     public void testMtnListConstructor() {
-        assertEquals("Cypress", mtnList1.getMtn("Cypress").getMtnName());
-        assertEquals("Seymour", mtnList1.getMtn("Seymour").getMtnName());
+        assertEquals("Cypress", mtnList1.getMtnByName("Cypress").getMtnName());
+        assertEquals("Seymour", mtnList1.getMtnByName("Seymour").getMtnName());
     }
 
 

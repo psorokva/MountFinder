@@ -46,12 +46,20 @@ public class MountainList {
     // REQUIRES: mountain list is not empty
     // EFFECTS: looks for a mountain with given name in the list
     // and returns it if it is in the list, otherwise returns null
-    public Mountain getMtn(String mountain) {
+    public Mountain getMtnByName(String mountain) {
         for (Mountain m : mtnList) {
             if (m.getMtnName().equals(mountain)) {
                 return m;
             }
         }
         return null;
+    }
+
+    public int size() {
+        return mtnList.size();
+    }
+
+    public Mountain get(int i) {
+        return mtnList.get(i);
     }
 }
