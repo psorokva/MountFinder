@@ -18,7 +18,7 @@ public class MountainListTest {
 
     @BeforeEach
     public void setUp() {
-        mtnList1 = new MountainList();
+        mtnList1 = new MountainList("TestList");
         m1 = new Mountain("M1");
         m2 = new Mountain("M2");
         m3 = new Mountain("M3");

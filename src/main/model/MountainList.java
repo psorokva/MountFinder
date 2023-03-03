@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,12 +14,14 @@ import java.util.List;
  * User can create and add new mountains to this list, but this information will not be stored
  * after the user quits application.
  */
-public class MountainList {
+public class MountainList implements Writable {
+    private String listName;
     private List<Mountain> mtnList;
 
 
     // EFFECTS: constructs new mountain list with Cypress and Seymour mountains in it
-    public MountainList() {
+    public MountainList(String listName) {
+        this.listName = listName;
         Mountain cypress = new Mountain("Cypress");
         Mountain seymour = new Mountain("Seymour");
 
@@ -63,5 +69,24 @@ public class MountainList {
     // EFFECTS: returns Mountain at position i from the Mountain List
     public Mountain getMtnAtIndex(int i) {
         return this.mtnList.get(i);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", listName);
+        json.put("mountains", mountainsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray mountainsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Mountain m : mtnList) {
+            jsonArray.put(m.toJson());
+        }
+
+        return jsonArray;
     }
 }

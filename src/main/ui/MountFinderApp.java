@@ -52,7 +52,7 @@ public class MountFinderApp {
         displayStartMenu();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        mtnList = new MountainList();
+        mtnList = new MountainList("List 1");
     }
 
     // MODIFIES: this

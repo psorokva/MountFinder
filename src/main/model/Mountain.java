@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 /**
@@ -10,7 +13,7 @@ import java.util.ArrayList;
  * distances fields.
  * The distances are set through Distance class relative to a specific city (Vancouver, Richmond, UBC).
  */
-public class Mountain {
+public class Mountain implements Writable {
     private final String name;
     private double liftPrice;             // in dollars
     private boolean gearRental;           // true if gear rental available
@@ -83,5 +86,13 @@ public class Mountain {
             }
         }
         return 0;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        //json.put("category", category);
+        return json;
     }
 }
