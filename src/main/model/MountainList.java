@@ -26,20 +26,21 @@ public class MountainList implements Writable {
         Mountain seymour = new Mountain("Seymour");
 
         mtnList = new LinkedList<>();
-        mtnList.add(cypress);
-        mtnList.add(seymour);
-
-        cypress.addLiftPrice(80);
-        cypress.makeRentalsAvailable();
-        cypress.setDistance("Vancouver", 30.8f);
-        cypress.setDistance("Richmond", 54.8f);
-        cypress.setDistance("UBC", 39.9f);
-
-        seymour.addLiftPrice(70);
-        seymour.makeRentalsNotAvailable();
-        seymour.setDistance("Vancouver", 26.4f);
-        seymour.setDistance("Richmond", 39.2f);
-        seymour.setDistance("UBC", 37.1f);
+        // TODO
+//        mtnList.add(cypress);
+//        mtnList.add(seymour);
+//
+//        cypress.addLiftPrice(80);
+//        cypress.makeRentalsAvailable();
+//        cypress.setDistance("Vancouver", 30.8f);
+//        cypress.setDistance("Richmond", 54.8f);
+//        cypress.setDistance("UBC", 39.9f);
+//
+//        seymour.addLiftPrice(70);
+//        seymour.makeRentalsNotAvailable();
+//        seymour.setDistance("Vancouver", 26.4f);
+//        seymour.setDistance("Richmond", 39.2f);
+//        seymour.setDistance("UBC", 37.1f);
     }
 
     // REQUIRES: mountain is not already in the list
@@ -79,6 +80,7 @@ public class MountainList implements Writable {
         return json;
     }
 
+    // TODO
     // EFFECTS: returns things in this workroom as a JSON array
     private JSONArray mountainsToJson() {
         JSONArray jsonArray = new JSONArray();
@@ -88,5 +90,9 @@ public class MountainList implements Writable {
         }
 
         return jsonArray;
+    }
+
+    public String getName() {
+        return listName;
     }
 }

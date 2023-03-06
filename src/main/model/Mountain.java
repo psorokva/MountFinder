@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -18,6 +19,7 @@ public class Mountain implements Writable {
     private double liftPrice;             // in dollars
     private boolean gearRental;           // true if gear rental available
     private ArrayList<Distance> distances;
+    private String rentalAvailabilityAnswer;
 
 
     // REQUIRES: name has a non-zero length
@@ -36,23 +38,19 @@ public class Mountain implements Writable {
     // EFFECTS: changes gearRental status to available
     public void makeRentalsAvailable() {
         this.gearRental = true;
+        rentalAvailabilityAnswer = "Rentals are available";
     }
 
     // MODIFIES: this
     // EFFECTS: changes gearRental status to not available
     public void makeRentalsNotAvailable() {
         this.gearRental = false;
+        rentalAvailabilityAnswer = "Rentals are not available";
     }
 
-    // EFFECTS: returns the availability of gear rental in a user-friendly form
-    public String rentalsAvailability() {
-        String answer;
-        if (!this.gearRental) {
-            answer = "Rentals are not available";
-            return answer;
-        }
-        answer = "Rentals are available";
-        return answer;
+    // EFFECTS: returns the availability of gear rental
+    public String getRentalAvailabilityAnswer() {
+        return this.rentalAvailabilityAnswer;
     }
 
     // REQUIRES: liftPrice > 0
@@ -77,6 +75,10 @@ public class Mountain implements Writable {
         distances.add(d1);
     }
 
+    public void setDistances(ArrayList<Distance> distances) {
+        this.distances = distances;
+    }
+
     // REQUIRES: City is one of: Vancouver, Richmond, UBC
     // EFFECTS: returns the distance to the mountain
     public double getDistance(String city) {
@@ -88,11 +90,25 @@ public class Mountain implements Writable {
         return 0;
     }
 
+    // TODO
     @Override
     public JSONObject toJson() {
-        JSONObject json = new JSONObject();
+        JSONObject json = new JSONObject(); //main file
+
         json.put("name", name);
-        //json.put("category", category);
+        json.put("lift price", Double.toString(liftPrice));
+        json.put("rental availability", Boolean.toString(gearRental));
+        json.put("distances", distancesToJson());
         return json;
+    }
+
+    // TODO fix this
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray distancesToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Distance d : distances) {
+            jsonArray.put(d.toJson());
+        }
+        return jsonArray;
     }
 }

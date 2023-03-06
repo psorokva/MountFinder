@@ -3,7 +3,11 @@ package ui;
 import model.Mountain;
 import model.MountainList;
 import model.User;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -15,9 +19,12 @@ import java.util.Scanner;
  * - User can quit application by selecting "q" command.
  */
 public class MountFinderApp {
+    private static final String JSON_STORE = "./data/mountainInfo.json";
     private MountainList mtnList;
     private Scanner input;
     private User user;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the application
     public MountFinderApp() {
@@ -53,6 +60,8 @@ public class MountFinderApp {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         mtnList = new MountainList("List 1");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // MODIFIES: this
@@ -92,6 +101,12 @@ public class MountFinderApp {
                 break;
             case "b":
                 displayMtnSelectionMenu();
+                break;
+            case "s":
+                handleSave();
+                break;
+            case "l":
+                loadSavedList();
                 break;
             default:
                 System.out.println("Selection not valid...");
@@ -168,7 +183,7 @@ public class MountFinderApp {
         } else {
             newMountain.makeRentalsNotAvailable();
         }
-        System.out.println(newMountain.rentalsAvailability());
+        System.out.println(newMountain.getRentalAvailabilityAnswer());
     }
 
     // MODIFIES: Mountain, MountainList, Distance
@@ -208,6 +223,8 @@ public class MountFinderApp {
         System.out.println("\tn -> Add new mountain");
         System.out.println("\nOr select one of the existing mountains:");
         System.out.println("\tc -> Browse current list");
+        System.out.println("\ts -> Save");
+        System.out.println("\tl -> Load");
         System.out.println("\tq -> Quit");
     }
 
@@ -244,13 +261,37 @@ public class MountFinderApp {
         }
         System.out.println(mountainName + " mountain:");
         System.out.println("\tLift ticket price: $" + mountain.getLiftPrice());
-        System.out.println("\t" + mountain.rentalsAvailability());
+        System.out.println("\t" + mountain.getRentalAvailabilityAnswer());
         System.out.print("\tDistance from home is ");
         System.out.printf("%.1f", mountain.getDistance(user.getUserHomeCity()));
         System.out.println(" km");
         System.out.println("\tb -> Select another mountain");
         System.out.println("\th -> Change home city");
         System.out.println("\tq -> Quit");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves the mountain list to file
+    private void handleSave() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(mtnList);
+            jsonWriter.close();
+            System.out.println("Saved " + mtnList.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads mountain list from file
+    private void loadSavedList() {
+        try {
+            mtnList = jsonReader.read();
+            System.out.println("Loaded " + mtnList.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
 }

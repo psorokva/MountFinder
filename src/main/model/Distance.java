@@ -1,12 +1,15 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 /**
  * This class records distance from the given city.
  * Mountain class uses this class to store information about distances from multiple cities
  * to one mountain.
  * Currently, the options for cities are limited to Vancouver, Richmond and UBC.
  */
-public class Distance {
+public class Distance implements Writable {
     private String city;
     private double distanceFromCity;
 
@@ -26,5 +29,14 @@ public class Distance {
     // EFFECTS: returns distance from the city
     public double getDistanceFromCity() {
         return this.distanceFromCity;
+    }
+
+    // TODO
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("city", city);
+        json.put("distanceFromCity", distanceFromCity);
+        return json;
     }
 }

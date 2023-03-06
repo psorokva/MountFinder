@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Distance;
 import model.Mountain;
 import model.MountainList;
 import org.json.JSONArray;
@@ -9,14 +10,17 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
-// Represents a reader that reads mountain list from JSON data stored in file
-public class FileReader {
+/**
+ * Represents a reader that reads mountain list from JSON data stored in file
+ */
+public class JsonReader {
     private String source;
 
     // EFFECTS: constructs reader to read from source file
-    public FileReader(String source) {
+    public JsonReader(String source) {
         this.source = source;
     }
 
@@ -27,11 +31,12 @@ public class FileReader {
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseMountainList(jsonObject);
     }
+
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
-        try (Stream<String> stream = Files.lines( Paths.get(source), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
 
@@ -42,14 +47,14 @@ public class FileReader {
     private MountainList parseMountainList(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         MountainList ml = new MountainList(name);
-        addThingies(ml, jsonObject);
+        addMountainList(ml, jsonObject);
         return ml;
     }
 
-    // MODIFIES: ml
+    // MODIFIES: wr
     // EFFECTS: parses thingies from JSON object and adds them to workroom
-    private void addThingies(MountainList ml, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("thingies");
+    private void addMountainList(MountainList ml, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("mountains");
         for (Object json : jsonArray) {
             JSONObject nextMountain = (JSONObject) json;
             addMountain(ml, nextMountain);
@@ -59,9 +64,40 @@ public class FileReader {
     // MODIFIES: ml
     // EFFECTS: parses mountain from JSON object and adds it to workroom
     private void addMountain(MountainList ml, JSONObject jsonObject) {
+
         String name = jsonObject.getString("name");
-        //Category category = Category.valueOf(jsonObject.getString("category"));
         Mountain mountain = new Mountain(name);
+        double liftPrice = Double.parseDouble(jsonObject.getString("lift price"));
+        String rentalAvailability = jsonObject.getString("rental availability");
+        ArrayList<Distance> distances = addDistances(jsonObject);
+
+        mountain.addLiftPrice(liftPrice);
+        if (rentalAvailability.equals("true")) {
+            mountain.makeRentalsAvailable();
+        } else {
+            mountain.makeRentalsNotAvailable();
+        }
+        mountain.setDistances(distances);
+
         ml.addMountain(mountain);
     }
+
+    // Todo add effects
+    private ArrayList<Distance> addDistances(JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("distances");
+        ArrayList<Distance> distances = new ArrayList<>();
+        for (Object json : jsonArray) {
+            JSONObject nextDistance = (JSONObject) json;
+            distances.add(addDistance(nextDistance));
+        }
+        return distances;
+    }
+
+    // Todo add effects
+    private Distance addDistance(JSONObject jsonObject) {
+        String city = jsonObject.getString("city");
+        double distanceFromCity = jsonObject.getDouble("distanceFromCity");
+        return new Distance(city, distanceFromCity);
+    }
+
 }
