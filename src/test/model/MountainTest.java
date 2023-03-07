@@ -28,11 +28,11 @@ class MountainTest {
 
     @Test
     public void rentalsAvailabilityTest() {
-        assertEquals("Rentals are not available", m1.rentalsAvailability());
+        assertNull(m1.getRentalAvailabilityAnswer());
         m1.makeRentalsAvailable();
-        assertEquals("Rentals are available", m1.rentalsAvailability());
+        assertEquals("Rentals are available", m1.getRentalAvailabilityAnswer());
         m1.makeRentalsNotAvailable();
-        assertEquals("Rentals are not available", m1.rentalsAvailability());
+        assertEquals("Rentals are not available", m1.getRentalAvailabilityAnswer());
     }
 
     @Test

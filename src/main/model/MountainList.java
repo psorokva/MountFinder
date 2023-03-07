@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,25 +24,7 @@ public class MountainList implements Writable {
     // EFFECTS: constructs new mountain list with Cypress and Seymour mountains in it
     public MountainList(String listName) {
         this.listName = listName;
-        Mountain cypress = new Mountain("Cypress");
-        Mountain seymour = new Mountain("Seymour");
-
         mtnList = new LinkedList<>();
-        // TODO
-//        mtnList.add(cypress);
-//        mtnList.add(seymour);
-//
-//        cypress.addLiftPrice(80);
-//        cypress.makeRentalsAvailable();
-//        cypress.setDistance("Vancouver", 30.8f);
-//        cypress.setDistance("Richmond", 54.8f);
-//        cypress.setDistance("UBC", 39.9f);
-//
-//        seymour.addLiftPrice(70);
-//        seymour.makeRentalsNotAvailable();
-//        seymour.setDistance("Vancouver", 26.4f);
-//        seymour.setDistance("Richmond", 39.2f);
-//        seymour.setDistance("UBC", 37.1f);
     }
 
     // REQUIRES: mountain is not already in the list
@@ -95,4 +79,10 @@ public class MountainList implements Writable {
     public String getName() {
         return listName;
     }
+
+    // EFFECTS: returns an unmodifiable list of mountains in this mountain list
+    public List<Mountain> getMountains() {
+        return Collections.unmodifiableList(mtnList);
+    }
+
 }

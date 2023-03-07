@@ -26,19 +26,17 @@ public class MountainListTest {
 
     @Test
     public void testMtnListConstructor() {
-        assertEquals("Cypress", mtnList1.getMtnByName("Cypress").getMtnName());
-        assertEquals("Seymour", mtnList1.getMtnByName("Seymour").getMtnName());
+        assertEquals(0, mtnList1.size());
     }
 
-    //Note: new MountainList already includes 2 mountains (Cypress and Seymour)
     @Test
     public void addMountainTest() {
-        assertEquals(2, mtnList1.size());
+        assertEquals(0, mtnList1.size());
         mtnList1.addMountain(m1);
-        assertEquals(3, mtnList1.size());
+        assertEquals(1, mtnList1.size());
         mtnList1.addMountain(m2);
         mtnList1.addMountain(m3);
-        assertEquals(5, mtnList1.size());
+        assertEquals(3, mtnList1.size());
     }
 
     @Test
@@ -54,10 +52,8 @@ public class MountainListTest {
 
     @Test
     public void getMtnAtIndexTest() {
-        assertEquals("Cypress", mtnList1.getMtnAtIndex(0).getMtnName());
-        assertEquals("Seymour", mtnList1.getMtnAtIndex(1).getMtnName());
         mtnList1.addMountain(m2);
-        assertEquals(m2, mtnList1.getMtnAtIndex(2));
+        assertEquals(m2, mtnList1.getMtnAtIndex(0));
     }
 
 
