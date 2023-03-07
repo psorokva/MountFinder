@@ -10,6 +10,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * This class tests JsonReader class.
+ */
 public class JsonReaderTest extends JsonTest {
 
     @Test
@@ -43,8 +46,8 @@ public class JsonReaderTest extends JsonTest {
             assertEquals("Sample Test List", ml.getName());
             List<Mountain> mountains = ml.getMountains();
             assertEquals(2, mountains.size());
-            checkMountain("Cypress", "80.0", mountains.get(0));
-            checkMountain("Seymour", "70.0", mountains.get(1));
+            checkMountain("Cypress", "80.0", "true", mountains.get(0));
+            checkMountain("Seymour", "70.0", "false", mountains.get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

@@ -46,6 +46,12 @@ public class MountainListTest {
     }
 
     @Test
+    public void getMtnByNameNotInListTest() {
+        mtnList1.addMountain(m1);
+        assertNull(mtnList1.getMtnByName("M2"));
+    }
+
+    @Test
     public void mtnNotInTheListTest() {
         assertNull(mtnList1.getMtnByName("Grouse"));
     }
