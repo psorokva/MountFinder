@@ -25,6 +25,9 @@
 - As a user, I want to be able to see the driving distance from my home (example: UBC) to the ski resort
 - As a user, I want to be able to compare ski resort lift ticket price
 - As a user, I want to be able to see whether a ski resort offers gear rental options
-- As a user, when I select the quit option from the application menu, I want to be reminded to save my new mountains and
-have the option to do so
-- As a user, when I start the application, I want to be given the option to load my mountain list from file.
+- As a user, I want to have the option to save my mountain list and to be reminded to save before quitting.
+- As a user, I want to be given the option to load my mountain list from file.
+
+## References
+[JsonSerializationDemo](https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo) was adapted as the basis for 
+the persistence module of this app.
