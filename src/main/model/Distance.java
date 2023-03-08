@@ -31,6 +31,7 @@ public class Distance implements Writable {
         return this.distanceFromCity;
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: returns distance as a JSON object
     @Override
     public JSONObject toJson() {

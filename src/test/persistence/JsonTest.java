@@ -5,8 +5,10 @@ import model.Mountain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * This class is used by JsonReaderTest and JsonWriterTest to verify
+ * This class is used by JsonReaderTest and JsonWriterTest to test
  * a mountain from mountain list.
+ * Citation: This class was adapted from JsonTest class in this app:
+ * <a href="https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo">...</a>
  */
 public class JsonTest {
 

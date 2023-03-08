@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /**
- * Represents a writer that writes JSON representation of mountain list to file
+ * Represents a writer that writes JSON representation of mountain list to file.
+ * Citation: This class was adapted from JsonWriter class in this app:
+ * <a href="https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo">...</a>
  */
 public class JsonWriter {
     private static final int TAB = 4;

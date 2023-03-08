@@ -1,0 +1,23 @@
+{
+    "mountains": [
+        {
+            "distances": [{
+                "city": "UBC",
+                "distanceFromCity": 120.3
+            }],
+            "lift price": "99.0",
+            "name": "Mountain 1",
+            "rental availability": "true"
+        },
+        {
+            "distances": [{
+                "city": "UBC",
+                "distanceFromCity": 45
+            }],
+            "lift price": "150.0",
+            "name": "Mountain 2",
+            "rental availability": "false"
+        }
+    ],
+    "name": "My mountain list"
+}

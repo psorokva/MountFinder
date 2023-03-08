@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 /**
- * Represents a reader that reads mountain list from JSON data stored in file
+ * Represents a reader that reads mountain list from JSON data stored in file.
+ * Citation: This class was adapted from JsonReader class in this app:
+ * <a href="https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo">...</a>
  */
 public class JsonReader {
     private final String source;

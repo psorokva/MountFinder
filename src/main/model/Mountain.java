@@ -92,6 +92,7 @@ public class Mountain implements Writable {
         return 0;
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: returns mountain as a JSON object
     @Override
     public JSONObject toJson() {
@@ -104,6 +105,7 @@ public class Mountain implements Writable {
         return json;
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: returns distances in this mountain as a JSON array
     private JSONArray distancesToJson() {
         JSONArray jsonArray = new JSONArray();

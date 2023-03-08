@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class tests JsonWriter class.
+ * Citation: This class was adapted from JsonWriterTest class in this app:
+ * <a href="https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo">...</a>
  */
 public class JsonWriterTest extends JsonTest {
 

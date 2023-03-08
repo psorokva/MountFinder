@@ -1,0 +1,12 @@
+{
+    "mountains": [{
+        "distances": [{
+            "city": "Vancouver",
+            "distanceFromCity": 123
+        }],
+        "lift price": "75.0",
+        "name": "Grouse",
+        "rental availability": "true"
+    }],
+    "name": "List 1"
+}

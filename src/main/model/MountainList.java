@@ -55,6 +55,7 @@ public class MountainList implements Writable {
         return this.mtnList.get(i);
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: returns mountain list as a JSON object
     @Override
     public JSONObject toJson() {
@@ -64,6 +65,7 @@ public class MountainList implements Writable {
         return json;
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // EFFECTS: returns mountains from this mountain list as a JSON array
     private JSONArray mountainsToJson() {
         JSONArray jsonArray = new JSONArray();
