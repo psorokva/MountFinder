@@ -75,6 +75,8 @@ public class Mountain implements Writable {
         distances.add(d1);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds distances values for this mountain
     public void setDistances(ArrayList<Distance> distances) {
         this.distances = distances;
     }
@@ -90,7 +92,7 @@ public class Mountain implements Writable {
         return 0;
     }
 
-    // TODO
+    // EFFECTS: returns mountain as a JSON object
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject(); //main file
@@ -102,8 +104,7 @@ public class Mountain implements Writable {
         return json;
     }
 
-    // TODO fix this
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns distances in this mountain as a JSON array
     private JSONArray distancesToJson() {
         JSONArray jsonArray = new JSONArray();
         for (Distance d : distances) {

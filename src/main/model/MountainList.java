@@ -16,8 +16,8 @@ import java.util.List;
  * after the user quits application.
  */
 public class MountainList implements Writable {
-    private String listName;
-    private List<Mountain> mtnList;
+    private final String listName;
+    private final List<Mountain> mtnList;
 
 
     // EFFECTS: constructs new mountain list with Cypress and Seymour mountains in it
@@ -55,6 +55,7 @@ public class MountainList implements Writable {
         return this.mtnList.get(i);
     }
 
+    // EFFECTS: returns mountain list as a JSON object
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -63,8 +64,7 @@ public class MountainList implements Writable {
         return json;
     }
 
-    // TODO
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns mountains from this mountain list as a JSON array
     private JSONArray mountainsToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -75,6 +75,7 @@ public class MountainList implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: returns the name of this mountain list
     public String getName() {
         return listName;
     }

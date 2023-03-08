@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * Represents a reader that reads mountain list from JSON data stored in file
  */
 public class JsonReader {
-    private String source;
+    private final String source;
 
     // EFFECTS: constructs reader to read from source file
     public JsonReader(String source) {
@@ -62,7 +62,7 @@ public class JsonReader {
     }
 
     // MODIFIES: ml
-    // EFFECTS: parses mountain from JSON object and adds it to workroom
+    // EFFECTS: parses mountain from JSON object and adds it to mountain list
     private void addMountain(MountainList ml, JSONObject jsonObject) {
 
         String name = jsonObject.getString("name");
@@ -82,7 +82,8 @@ public class JsonReader {
         ml.addMountain(mountain);
     }
 
-    // Todo add effects
+    // MODIFIES: ml
+    // EFFECTS: parses distances from JSON object and returns them in ArrayList
     private ArrayList<Distance> addDistances(JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("distances");
         ArrayList<Distance> distances = new ArrayList<>();
@@ -93,7 +94,8 @@ public class JsonReader {
         return distances;
     }
 
-    // Todo add effects
+    // MODIFIES: ml
+    // EFFECTS: parses each distance from distances JSON object and returns it
     private Distance addDistance(JSONObject jsonObject) {
         String city = jsonObject.getString("city");
         double distanceFromCity = jsonObject.getDouble("distanceFromCity");

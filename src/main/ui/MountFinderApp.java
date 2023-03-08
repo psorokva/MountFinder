@@ -26,6 +26,8 @@ public class MountFinderApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
+    private boolean keepGoing;
+
     // EFFECTS: runs the application
     public MountFinderApp() {
         runApp();
@@ -34,7 +36,7 @@ public class MountFinderApp {
     // MODIFIES: this
     // EFFECTS: processes user input
     private void runApp() {
-        boolean keepGoing = true;
+        keepGoing = true;
         String command;
 
         init();
@@ -43,12 +45,7 @@ public class MountFinderApp {
             System.out.print("Choice: ");
             command = input.next();
             command = command.toLowerCase();
-
-            if (command.equals("q")) {
-                keepGoing = false;
-            } else {
-                processCommand1(command);
-            }
+            processCommand1(command);
         }
         System.out.println("\nGoodbye!");
     }
@@ -56,7 +53,7 @@ public class MountFinderApp {
     // EFFECTS: initializes the values
     private void init() {
         user = new User();
-        displayStartMenu();
+        displayCitySelectionMenu();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         mtnList = new MountainList("List 1");
@@ -70,18 +67,18 @@ public class MountFinderApp {
         switch (command) {
             case "v":
                 user.setUserHomeCity("Vancouver");
-                displayMtnSelectionMenu();
+                displayStartingMenu();
                 break;
             case "r":
                 user.setUserHomeCity("Richmond");
-                displayMtnSelectionMenu();
+                displayStartingMenu();
                 break;
             case "u":
                 user.setUserHomeCity("UBC");
-                displayMtnSelectionMenu();
+                displayStartingMenu();
                 break;
             case "h":
-                displayStartMenu();
+                displayCitySelectionMenu();
                 break;
             default:
                 processCommand2(command);
@@ -93,20 +90,43 @@ public class MountFinderApp {
     // EFFECTS: processes user command
     private void processCommand2(String command) {
         switch (command) {
-            case "n":
+            case "a":
                 handleAddingNewMountain();
                 break;
             case "c":
+                if (mtnList.size() == 0) {
+                    System.out.println("No mountains in the list");
+                    displayStartingMenu();
+                } else {
+                    loadCurrentMtnList();
+                }
+                break;
+            case "o":
                 loadCurrentMtnList();
                 break;
-            case "b":
-                displayMtnSelectionMenu();
+            case "q":
+                askToSaveMenu();
                 break;
-            case "s":
-                handleSave();
+            default:
+                processCommand3(command);
+                break;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command
+    private void processCommand3(String command) {
+        switch (command) {
+            case "m":
+                displayMainMenu();
                 break;
             case "l":
                 loadSavedList();
+                displayMainMenu();
+                break;
+            case "s":
+                handleSave();
+                displayMainMenu();
                 break;
             default:
                 System.out.println("Selection not valid...");
@@ -122,8 +142,24 @@ public class MountFinderApp {
             Mountain currentMtn = mtnList.getMtnAtIndex(i);
             System.out.println("\t" + i + " -> " + currentMtn.getMtnName());
         }
+        System.out.println("\nReturn to main menu");
+        System.out.println("\tm -> Go back to main menu");
         System.out.print("Choice: ");
         String selection = input.next();
+        if (selection.equals("m")) {
+            displayMainMenu();
+        } else {
+            try {
+                handleMtnSelection(selection);
+            } catch (NumberFormatException e) {
+                System.out.println("Selection not valid...");
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads selected mountain if selection is valid
+    private void handleMtnSelection(String selection) {
         int index = Integer.parseInt(selection);
         while (index >= mtnList.size()) {
             System.out.println("Selection not valid...");
@@ -147,7 +183,7 @@ public class MountFinderApp {
         addNewMtnRentals(newMountain);
         addNewMtnDistanceFromHome(newMountain);
         System.out.println(mountainName + " mountain added successfully!");
-        displayMtnSelectionMenu();
+        displayMainMenu();
     }
 
     // MODIFIES: Mountain, MountainList
@@ -176,6 +212,7 @@ public class MountFinderApp {
         while (!command.equalsIgnoreCase("a")
                 && !command.equalsIgnoreCase("f")) {
             System.out.println("Invalid option");
+            System.out.print("Choice: ");
             command = input.next();
         }
         if (command.equals("a")) {
@@ -206,25 +243,41 @@ public class MountFinderApp {
     }
 
     // EFFECTS: displays menu of city options to user
-    private void displayStartMenu() {
+    private void displayCitySelectionMenu() {
         System.out.println("\nWelcome to Mountain Finder!");
         System.out.println("\nSelect your home city:");
         System.out.println("\tv -> Vancouver");
         System.out.println("\tr -> Richmond");
         System.out.println("\tu -> UBC");
+        System.out.println("\nQuit:");
         System.out.println("\tq -> quit");
     }
 
     // EFFECTS: displays main menu of options to user
-    private void displayMtnSelectionMenu() {
+    private void displayStartingMenu() {
         System.out.println("\nSelected home city: " + user.getUserHomeCity());
         System.out.println("\th -> Change home city");
         System.out.println("\nAdd a new mountain to the list:");
-        System.out.println("\tn -> Add new mountain");
-        System.out.println("\nOr select one of the existing mountains:");
+        System.out.println("\ta -> Add new mountain");
+        System.out.println("\nBrowse current list of mountains:");
         System.out.println("\tc -> Browse current list");
-        System.out.println("\ts -> Save");
+        System.out.println("\nOr load mountains from the existing file:");
         System.out.println("\tl -> Load");
+        System.out.println("\nQuit:");
+        System.out.println("\tq -> Quit");
+    }
+
+    // EFFECTS: displays main menu of options to user
+    private void displayMainMenu() {
+        System.out.println("\nSelected home city: " + user.getUserHomeCity());
+        System.out.println("\th -> Change home city");
+        System.out.println("\nAdd a new mountain to the list:");
+        System.out.println("\ta -> Add new mountain");
+        System.out.println("\nBrowse current list of mountains:");
+        System.out.println("\tc -> Browse current list");
+        System.out.println("\nSave current list of mountains:");
+        System.out.println("\ts -> Save");
+        System.out.println("\nQuit:");
         System.out.println("\tq -> Quit");
     }
 
@@ -251,6 +304,23 @@ public class MountFinderApp {
         System.out.print("Enter distance in km from " + user.getUserHomeCity() + ": ");
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays prompt text for options to save before quitting
+    private void askToSaveMenu() {
+        System.out.println("\nWould you like to save current list?");
+        System.out.println("\ty -> Yes, save and quit");
+        System.out.println("\tn -> No, quit without saving");
+        String command = input.next();
+        if (command.equals("y")) {
+            handleSave();
+            keepGoing = false;
+        } else if (command.equals("n")) {
+            keepGoing = false;
+        } else {
+            processCommand1(command);
+        }
+    }
+
     // EFFECTS: displays all information for selected mountain
     //          if user changed home city after adding new mountain,
     //          asks to enter distance from this home city to the mountain
@@ -265,7 +335,8 @@ public class MountFinderApp {
         System.out.print("\tDistance from home is ");
         System.out.printf("%.1f", mountain.getDistance(user.getUserHomeCity()));
         System.out.println(" km");
-        System.out.println("\tb -> Select another mountain");
+        System.out.println("\to -> Select another mountain");
+        System.out.println("\tm -> Go back to main menu");
         System.out.println("\th -> Change home city");
         System.out.println("\tq -> Quit");
     }
@@ -293,5 +364,4 @@ public class MountFinderApp {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
-
 }

@@ -3,7 +3,7 @@ package persistence;
 import org.json.JSONObject;
 
 /**
-Todo
+ * Interface for JsonReader and JsonWriter classes
  */
 public interface Writable {
     // EFFECTS: returns this as JSON object

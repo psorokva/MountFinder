@@ -10,8 +10,8 @@ import persistence.Writable;
  * Currently, the options for cities are limited to Vancouver, Richmond and UBC.
  */
 public class Distance implements Writable {
-    private String city;
-    private double distanceFromCity;
+    private final String city;
+    private final double distanceFromCity;
 
     // REQUIRES: city is one of: UBC, Vancouver, Richmond
     //           distance is > 0
@@ -31,7 +31,7 @@ public class Distance implements Writable {
         return this.distanceFromCity;
     }
 
-    // TODO
+    // EFFECTS: returns distance as a JSON object
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
