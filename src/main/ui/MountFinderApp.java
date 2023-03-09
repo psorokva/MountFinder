@@ -163,6 +163,7 @@ public class MountFinderApp {
         int index = Integer.parseInt(selection);
         while (index >= mtnList.size()) {
             System.out.println("Selection not valid...");
+            System.out.print("Choice: ");
             selection = input.next();
             index = Integer.parseInt(selection);
         }
@@ -310,6 +311,7 @@ public class MountFinderApp {
         System.out.println("\nWould you like to save current list?");
         System.out.println("\ty -> Yes, save and quit");
         System.out.println("\tn -> No, quit without saving");
+        System.out.print("Choice: ");
         String command = input.next();
         if (command.equals("y")) {
             handleSave();
@@ -341,6 +343,7 @@ public class MountFinderApp {
         System.out.println("\tq -> Quit");
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // MODIFIES: this
     // EFFECTS: saves the mountain list to file
     private void handleSave() {
@@ -354,6 +357,7 @@ public class MountFinderApp {
         }
     }
 
+    // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // MODIFIES: this
     // EFFECTS: loads mountain list from file
     private void loadSavedList() {
