@@ -1,35 +1,12 @@
 {
-    "mountains": [
-        {
-            "distances": [
-                {
-                    "city": "Vancouver",
-                    "distanceFromCity": 223
-                },
-                {
-                    "city": "Richmond",
-                    "distanceFromCity": 98
-                }
-            ],
-            "lift price": "56.0",
-            "name": "Harshil",
-            "rental availability": "true"
-        },
-        {
-            "distances": [
-                {
-                    "city": "UBC",
-                    "distanceFromCity": 121
-                },
-                {
-                    "city": "Vancouver",
-                    "distanceFromCity": 66
-                }
-            ],
-            "lift price": "77.0",
-            "name": "Polina",
-            "rental availability": "false"
-        }
-    ],
+  "mountains": [{
+    "distances": [{
+      "city": "Vancouver",
+      "distanceFromCity": 123
+    }],
+    "lift price": "75.0",
+    "name": "Grouse",
+    "rental availability": "true"
+  }],
     "name": "List 1"
 }
