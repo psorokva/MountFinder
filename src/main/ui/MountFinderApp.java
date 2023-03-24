@@ -26,8 +26,6 @@ public class MountFinderApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    private StartingMenuUI startingMenuUI;
-
     private String[] cities;
 
     private boolean keepGoing;
@@ -57,7 +55,6 @@ public class MountFinderApp {
     // EFFECTS: initializes the values
     private void init() {
         user = new User();
-//        startingMenuUI = new StartingMenuUI();
         cities = new String[]{"", "Vancouver", "UBC", "Richmond"};
         //displayCitySelectionMenu();
         //input = new Scanner(System.in);
