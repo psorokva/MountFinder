@@ -66,76 +66,76 @@ public class MountFinderApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand1(String command) {
-        switch (command) {
-            case "v":
-                user.setUserHomeCity("Vancouver");
-                displayStartingMenu();
-                break;
-            case "r":
-                user.setUserHomeCity("Richmond");
-                displayStartingMenu();
-                break;
-            case "u":
-                user.setUserHomeCity("UBC");
-                displayStartingMenu();
-                break;
-            case "h":
-                displayCitySelectionMenu();
-                break;
-            default:
-                processCommand2(command);
-                break;
-        }
-    }
+//    private void processCommand1(String command) {
+//        switch (command) {
+//            case "v":
+//                user.setUserHomeCity("Vancouver");
+//                displayStartingMenu();
+//                break;
+//            case "r":
+//                user.setUserHomeCity("Richmond");
+//                displayStartingMenu();
+//                break;
+//            case "u":
+//                user.setUserHomeCity("UBC");
+//                displayStartingMenu();
+//                break;
+//            case "h":
+//                displayCitySelectionMenu();
+//                break;
+//            default:
+//                processCommand2(command);
+//                break;
+//        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand2(String command) {
-        switch (command) {
-            case "a":
-                handleAddingNewMountain();
-                break;
-            case "c":
-                if (mtnList.size() == 0) {
-                    System.out.println("No mountains in the list");
-                    displayStartingMenu();
-                } else {
-                    loadCurrentMtnList();
-                }
-                break;
-            case "o":
-                loadCurrentMtnList();
-                break;
-            case "q":
-                askToSaveMenu();
-                break;
-            default:
-                processCommand3(command);
-                break;
-        }
-    }
+//    private void processCommand2(String command) {
+//        switch (command) {
+//            case "a":
+//                handleAddingNewMountain();
+//                break;
+//            case "c":
+//                if (mtnList.size() == 0) {
+//                    System.out.println("No mountains in the list");
+//                    displayStartingMenu();
+//                } else {
+//                    loadCurrentMtnList();
+//                }
+//                break;
+//            case "o":
+//                loadCurrentMtnList();
+//                break;
+//            case "q":
+//                askToSaveMenu();
+//                break;
+//            default:
+//                processCommand3(command);
+//                break;
+//        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand3(String command) {
-        switch (command) {
-            case "m":
-                displayMainMenu();
-                break;
-            case "l":
-                loadSavedList();
-                displayMainMenu();
-                break;
-            case "s":
-                handleSave();
-                displayMainMenu();
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
-        }
-    }
+//    private void processCommand3(String command) {
+//        switch (command) {
+//            case "m":
+//                displayMainMenu();
+//                break;
+//            case "l":
+//                loadSavedList();
+//                displayMainMenu();
+//                break;
+//            case "s":
+//                handleSave();
+//                displayMainMenu();
+//                break;
+//            default:
+//                System.out.println("Selection not valid...");
+//                break;
+//        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: loads current mountain list and collects user selection
@@ -349,7 +349,7 @@ public class MountFinderApp {
     // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // MODIFIES: this
     // EFFECTS: saves the mountain list to file
-    private void handleSave() {
+    public void handleSave(MountainList mtnList) {
         try {
             jsonWriter.open();
             jsonWriter.write(mtnList);
@@ -363,13 +363,14 @@ public class MountFinderApp {
     // Citation: adapted from https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     // MODIFIES: this
     // EFFECTS: loads mountain list from file
-    private void loadSavedList() {
+    public MountainList loadSavedList() {
         try {
             mtnList = jsonReader.read();
             System.out.println("Loaded " + mtnList.getName() + " from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+        return mtnList;
     }
 
     public String[] getCities() {

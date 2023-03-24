@@ -17,18 +17,16 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Represents application's main window frame.
  */
-public class MountFinderUI extends JFrame implements ActionListener {
+public class MountFinderUI extends JFrame {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 
-    private JLabel label;
     private JComboBox<String> cityDropdown;
     private JPanel buttonPanel;
     private JPanel tablePanel;
@@ -68,7 +66,7 @@ public class MountFinderUI extends JFrame implements ActionListener {
     }
 
     private void openCitySelectionMenu() {
-        label = new JLabel("Select city");
+        JLabel label = new JLabel("Select city");
         cityDropdown = new JComboBox<>(mfApp.getCities());
         add(label);
         add(cityDropdown);
@@ -80,63 +78,35 @@ public class MountFinderUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
     }
 
-//    This is the method that is called when the JButton btn is clicked
-    public void actionPerformed(ActionEvent e) {
-//        if (e.getActionCommand().equals("ShowMenuOptions")) {
-//            processShowMenuOptions(e);
-//        }
-    }
-
+    @SuppressWarnings("methodlength")
     private void showAddNewMountainMenu() {
         tablePanel = new JPanel();
-        tablePanel.setLayout(new GridLayout(5,1));
-        JLabel mtnNameLabel = new JLabel("Name:");
+        tablePanel.setLayout(new GridLayout(5, 1));
         mtnNameField = new JTextField(10);
-        JLabel mtnLiftPriceLabel = new JLabel("Lift price:");
         mtnLiftPriceField = new JTextField(10);
-        // Adapted from: https://stackoverflow.com/questions/20541230/allow-only-numbers-in-jtextfield
         acceptOnlyNumbers(mtnLiftPriceField);
-        JLabel mtnRentalsLabel = new JLabel("Rentals availability:");
-        JLabel emptyLabel = new JLabel("");
         ButtonGroup mtnRentalsOptions = new ButtonGroup();
         mtnRentalsAvailable = new JRadioButton("Available", null, true);
         JRadioButton mtnRentalsNotAvailable = new JRadioButton("Not Available");
         mtnRentalsOptions.add(mtnRentalsAvailable);
         mtnRentalsOptions.add(mtnRentalsNotAvailable);
-        JLabel mtnDistanceLabel = new JLabel("Distance in km from city:");
         mtnDistanceField = new JTextField(10);
         acceptOnlyNumbers(mtnDistanceField);
 
-        tablePanel.add(mtnNameLabel);
+        tablePanel.add(new JLabel("Name:"));
         tablePanel.add(mtnNameField);
-        tablePanel.add(mtnLiftPriceLabel);
+        tablePanel.add(new JLabel("Lift price:"));
         tablePanel.add(mtnLiftPriceField);
-        tablePanel.add(mtnRentalsLabel);
-        tablePanel.add(emptyLabel);
+        tablePanel.add(new JLabel("Rentals availability:"));
+        tablePanel.add(new JLabel(""));
         tablePanel.add(mtnRentalsAvailable);
         tablePanel.add(mtnRentalsNotAvailable);
-        tablePanel.add(mtnDistanceLabel);
+        tablePanel.add(new JLabel("Distance in km from city:"));
         tablePanel.add(mtnDistanceField);
         tablePanel.add(new JButton(new SaveNewMountainAction()));
         add(tablePanel);
         repaint();
         revalidate();
-    }
-
-    private void acceptOnlyNumbers(JTextField field) {
-        ((AbstractDocument) field.getDocument()).setDocumentFilter(new DocumentFilter() {
-            Pattern regEx = Pattern.compile("\\d*");
-
-            @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                    throws BadLocationException {
-                Matcher matcher = regEx.matcher(text);
-                if (!matcher.matches()) {
-                    return;
-                }
-                super.replace(fb, offset, length, text, attrs);
-            }
-        });
     }
 
     private void processShowMenuOptions() {
@@ -164,6 +134,8 @@ public class MountFinderUI extends JFrame implements ActionListener {
         buttonPanel.add(new JButton(new AddNewMountainAction()));
         buttonPanel.add(new JButton(new BrowseCurrentListAction()));
         buttonPanel.add(new JButton(new LoadListFromFileAction()));
+        buttonPanel.add(new JButton(new SaveToFileAction()));
+        //todo add grey-out if list is empty
 
         add(buttonPanel);
     }
@@ -176,17 +148,6 @@ public class MountFinderUI extends JFrame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent evt) {
-//            JOptionPane popup = new JOptionPane("City selected");
-//            final JDialog dialog = popup.createDialog("title");
-//            Timer timer = new Timer(1500, new ActionListener() {
-//                public void actionPerformed(ActionEvent e) {
-//                    dialog.setVisible(false);
-//                }
-//            });
-//            timer.setRepeats(false);
-//            timer.start();
-//            dialog.setVisible(true);
-//            popup.showMessageDialog(null, "City selected");
             processShowMenuOptions();
         }
     }
@@ -210,12 +171,13 @@ public class MountFinderUI extends JFrame implements ActionListener {
             super("Save mountain");
         }
 
+        //Image credit: <a href="https://www.freepik.com/free-vector/cute-astronaut-playing-snowboard-cartoon-vector-icon-illustration-science-sport-icon-isolated_33777470.htm#query=snowboarding&position=2&from_view=keyword&track=sph#position=2&query=snowboarding">Image by catalyststuff</a> on Freepik
         @Override
         public void actionPerformed(ActionEvent evt) {
             processSaveNewMountain();
             addNewMountainToList(mountain);
             JOptionPane popup = new JOptionPane("New mountain added!");
-            BufferedImage bufferedImage = null;
+            BufferedImage bufferedImage;
             try {
                 bufferedImage = ImageIO.read(new File("data/images/6700_4_06.jpg"));
             } catch (IOException e) {
@@ -224,12 +186,7 @@ public class MountFinderUI extends JFrame implements ActionListener {
             Image image = bufferedImage.getScaledInstance(300, 300, Image.SCALE_DEFAULT);
             ImageIcon icon = new ImageIcon(image);
             popup.setIcon(icon);
-            final JDialog dialog = popup.createDialog("title");
-            // Adapted from https://stackoverflow.com/questions/5966005/create-a-plain-message-box-that-disappears-after-a-few-seconds-in-java
-            //Uncomment to make popup disappear after 3 sec
-//            Timer timer = new Timer(3000, e -> dialog.setVisible(false));
-//            timer.setRepeats(false);
-//            timer.start();
+            final JDialog dialog = popup.createDialog("Success");
             dialog.setVisible(true);
             remove(tablePanel);//todo Display list
             repaint();
@@ -283,12 +240,63 @@ public class MountFinderUI extends JFrame implements ActionListener {
     private class LoadListFromFileAction extends AbstractAction {
 
         LoadListFromFileAction() {
-            super("Load list");
+            super("Load list from file");
         }
 
         @Override
         public void actionPerformed(ActionEvent evt) {
-            //TODO
+            processLoadingDataFromFile();
         }
+    }
+
+    private void processLoadingDataFromFile() {
+        mountainList = mfApp.loadSavedList();
+        JOptionPane popup = new JOptionPane("Loaded List 1!");
+        // Adapted from https://stackoverflow.com/questions/5966005/create-a-plain-message-box-that-disappears-after-a-few-seconds-in-java
+        final JDialog dialog = popup.createDialog("Success");
+        Timer timer = new Timer(1200, e -> dialog.setVisible(false));
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    private class SaveToFileAction extends AbstractAction {
+
+        SaveToFileAction() {
+            super("Save list to file");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            processSavingDataToFile();
+        }
+    }
+
+    private void processSavingDataToFile() {
+        mfApp.handleSave(mountainList);
+        JOptionPane popup = new JOptionPane("Saved as List 1!");
+        // Adapted from https://stackoverflow.com/questions/5966005/create-a-plain-message-box-that-disappears-after-a-few-seconds-in-java
+        final JDialog dialog = popup.createDialog("Success");
+        Timer timer = new Timer(1200, e -> dialog.setVisible(false));
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    // Adapted from: https://stackoverflow.com/questions/20541230/allow-only-numbers-in-jtextfield
+    private void acceptOnlyNumbers(JTextField field) {
+        ((AbstractDocument) field.getDocument()).setDocumentFilter(new DocumentFilter() {
+            Pattern regEx = Pattern.compile("\\d*");
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                Matcher matcher = regEx.matcher(text);
+                if (!matcher.matches()) {
+                    return;
+                }
+                super.replace(fb, offset, length, text, attrs);
+            }
+        });
     }
 }
