@@ -30,17 +30,22 @@ public class MountFinderUI extends JFrame {
     private JComboBox<String> cityDropdown;
     private JPanel buttonPanel;
     private JPanel tablePanel;
+    private JPanel mountainListPanel;
+    private JPanel mountainDetailsPanel;
     private JTextField mtnNameField;
     private JTextField mtnLiftPriceField;
     private JRadioButton mtnRentalsAvailable;
     private JTextField mtnDistanceField;
 
-    private MountFinderApp mfApp;
-    private User user;
+    private final MountFinderApp mfApp;
+    private final User user;
     private Mountain mountain;
     private MountainList mountainList;
-    private Boolean citySelected = false;
-    protected Boolean mainMenuVisible = false;
+
+    protected boolean mainMenuVisible = false;
+    private boolean addNewMtnFormVisible = false;
+    private boolean mtnListVisible = false;
+    private boolean mtnDetailsMenuVisible = false;
 
 
     /**
@@ -112,21 +117,37 @@ public class MountFinderUI extends JFrame {
     private void processShowMenuOptions() {
         String selected = (String) this.cityDropdown.getSelectedItem();
         assert selected != null;
+        user.setUserHomeCity(selected);
         if (!selected.equals("")) {
-            citySelected = true;
-            user.setUserHomeCity(selected);
             if (!mainMenuVisible) {
                 showMainMenu();
                 mainMenuVisible = true;
             }
+            // if city is unselected
         } else {
-            citySelected = false;
-            user.setUserHomeCity("");
-            remove(buttonPanel);
-            mainMenuVisible = false;
+            if (mainMenuVisible) {
+                remove(buttonPanel);
+                mainMenuVisible = false;
+            }
+            removeOtherPanels();
         }
         repaint();
         revalidate();
+    }
+
+    private void removeOtherPanels() {
+        if (addNewMtnFormVisible) {
+            remove(tablePanel);
+            addNewMtnFormVisible = false;
+        }
+        if (mtnListVisible) {
+            remove(mountainListPanel);
+            mtnListVisible = false;
+        }
+        if (mtnDetailsMenuVisible) {
+            remove(mountainDetailsPanel);
+            mtnDetailsMenuVisible = false;
+        }
     }
 
     private void showMainMenu() {
@@ -161,7 +182,11 @@ public class MountFinderUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent evt) {
-            showAddNewMountainMenu();
+            removeOtherPanels();
+            if (!addNewMtnFormVisible) {
+                showAddNewMountainMenu();
+                addNewMtnFormVisible = true;
+            }
         }
     }
 
@@ -222,17 +247,54 @@ public class MountFinderUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent evt) {
-            displayCurrentList();
+            removeOtherPanels();
+            if (!mtnListVisible) {
+                displayCurrentList();
+                mtnListVisible = true;
+            }
         }
     }
 
     private void displayCurrentList() {
-        JPanel mountainListPanel = new JPanel();
+        mountainListPanel = new JPanel();
         mountainListPanel.setLayout(new BoxLayout(mountainListPanel, BoxLayout.PAGE_AXIS));
         for (Mountain m : mountainList.getMountains()) {
-            mountainListPanel.add(new JButton(m.getMtnName()));
+            JButton btn = new JButton(new DisplayMtnInfoAction(m));
+            btn.setText(m.getMtnName());
+            mountainListPanel.add(btn);
         }
         add(mountainListPanel);
+        repaint();
+        revalidate();
+    }
+
+    private class DisplayMtnInfoAction extends AbstractAction {
+        Mountain selectedMtn;
+
+        DisplayMtnInfoAction(Mountain m) {
+            selectedMtn = m;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            removeOtherPanels();
+            if (!mtnDetailsMenuVisible) {
+                processDisplayingMtnDetails(selectedMtn);
+                mtnDetailsMenuVisible = true;
+            }
+        }
+    }
+
+    private void processDisplayingMtnDetails(Mountain mountain) {
+        mountainDetailsPanel = new JPanel();
+        mountainDetailsPanel.add(new JLabel("Name:"));
+        mountainDetailsPanel.add(new JLabel(mountain.getMtnName()));
+        mountainDetailsPanel.add(new JLabel("Lift ticket price:"));
+        mountainDetailsPanel.add(new JLabel("$" + mountain.getLiftPrice()));
+        mountainDetailsPanel.add(new JLabel(mountain.getRentalAvailabilityAnswer()));
+        mountainDetailsPanel.add(new JLabel("Distance from " + user.getUserHomeCity() + " :"));
+        mountainDetailsPanel.add((new JLabel(mountain.getDistance(user.getUserHomeCity()) + " km")));
+        add(mountainDetailsPanel);
         repaint();
         revalidate();
     }
@@ -286,7 +348,7 @@ public class MountFinderUI extends JFrame {
     // Adapted from: https://stackoverflow.com/questions/20541230/allow-only-numbers-in-jtextfield
     private void acceptOnlyNumbers(JTextField field) {
         ((AbstractDocument) field.getDocument()).setDocumentFilter(new DocumentFilter() {
-            Pattern regEx = Pattern.compile("\\d*");
+            final Pattern regEx = Pattern.compile("\\d*");
 
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
