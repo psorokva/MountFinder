@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class MountFinderApp {
     private static final String JSON_STORE = "./data/mountainInfo.json";
     private MountainList mtnList;
-    //private Scanner input;
+    private Scanner input;
     private User user;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -38,27 +38,32 @@ public class MountFinderApp {
     // MODIFIES: this
     // EFFECTS: processes user input
     private void runApp() {
-//        keepGoing = true;
-//        String command;
-
         init();
-
-//        while (keepGoing) {
-//            System.out.print("Choice: ");
-//            command = input.next();
-//            command = command.toLowerCase();
-//            processCommand1(command);
-//        }
-//        System.out.println("\nGoodbye!");
+        //Uncomment to enable console functionality
+//        startConsole();
     }
+
+    private void startConsole() {
+        keepGoing = true;
+        String command;
+        while (keepGoing) {
+            System.out.print("Choice: ");
+            command = input.next();
+            command = command.toLowerCase();
+            processCommand1(command);
+        }
+        System.out.println("\nGoodbye!");
+    }
+
 
     // EFFECTS: initializes the values
     private void init() {
         user = new User();
         cities = new String[]{"", "Vancouver", "UBC", "Richmond"};
-        //displayCitySelectionMenu();
-        //input = new Scanner(System.in);
-        //input.useDelimiter("\n");
+        //Uncomment to enable console functionality
+//        displayCitySelectionMenu();
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
         mtnList = new MountainList("List 1");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -66,76 +71,76 @@ public class MountFinderApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command
-//    private void processCommand1(String command) {
-//        switch (command) {
-//            case "v":
-//                user.setUserHomeCity("Vancouver");
-//                displayStartingMenu();
-//                break;
-//            case "r":
-//                user.setUserHomeCity("Richmond");
-//                displayStartingMenu();
-//                break;
-//            case "u":
-//                user.setUserHomeCity("UBC");
-//                displayStartingMenu();
-//                break;
-//            case "h":
-//                displayCitySelectionMenu();
-//                break;
-//            default:
-//                processCommand2(command);
-//                break;
-//        }
-//    }
+    private void processCommand1(String command) {
+        switch (command) {
+            case "v":
+                user.setUserHomeCity("Vancouver");
+                displayStartingMenu();
+                break;
+            case "r":
+                user.setUserHomeCity("Richmond");
+                displayStartingMenu();
+                break;
+            case "u":
+                user.setUserHomeCity("UBC");
+                displayStartingMenu();
+                break;
+            case "h":
+                displayCitySelectionMenu();
+                break;
+            default:
+                processCommand2(command);
+                break;
+        }
+    }
 
     // MODIFIES: this
     // EFFECTS: processes user command
-//    private void processCommand2(String command) {
-//        switch (command) {
-//            case "a":
-//                handleAddingNewMountain();
-//                break;
-//            case "c":
-//                if (mtnList.size() == 0) {
-//                    System.out.println("No mountains in the list");
-//                    displayStartingMenu();
-//                } else {
-//                    loadCurrentMtnList();
-//                }
-//                break;
-//            case "o":
-//                loadCurrentMtnList();
-//                break;
-//            case "q":
-//                askToSaveMenu();
-//                break;
-//            default:
-//                processCommand3(command);
-//                break;
-//        }
-//    }
+    private void processCommand2(String command) {
+        switch (command) {
+            case "a":
+                handleAddingNewMountain();
+                break;
+            case "c":
+                if (mtnList.size() == 0) {
+                    System.out.println("No mountains in the list");
+                    displayStartingMenu();
+                } else {
+                    loadCurrentMtnList();
+                }
+                break;
+            case "o":
+                loadCurrentMtnList();
+                break;
+            case "q":
+                askToSaveMenu();
+                break;
+            default:
+                processCommand3(command);
+                break;
+        }
+    }
 
     // MODIFIES: this
     // EFFECTS: processes user command
-//    private void processCommand3(String command) {
-//        switch (command) {
-//            case "m":
-//                displayMainMenu();
-//                break;
-//            case "l":
-//                loadSavedList();
-//                displayMainMenu();
-//                break;
-//            case "s":
-//                handleSave();
-//                displayMainMenu();
-//                break;
-//            default:
-//                System.out.println("Selection not valid...");
-//                break;
-//        }
-//    }
+    private void processCommand3(String command) {
+        switch (command) {
+            case "m":
+                displayMainMenu();
+                break;
+            case "l":
+                loadSavedList();
+                displayMainMenu();
+                break;
+            case "s":
+                handleSave(mtnList);
+                displayMainMenu();
+                break;
+            default:
+                System.out.println("Selection not valid...");
+                break;
+        }
+    }
 
     // MODIFIES: this
     // EFFECTS: loads current mountain list and collects user selection
@@ -148,16 +153,16 @@ public class MountFinderApp {
         System.out.println("\nReturn to main menu");
         System.out.println("\tm -> Go back to main menu");
         System.out.print("Choice: ");
-//        String selection = input.next();
-//        if (selection.equals("m")) {
-//            displayMainMenu();
-//        } else {
-//            try {
-//                handleMtnSelection(selection);
-//            } catch (NumberFormatException e) {
-//                System.out.println("Selection not valid...");
-//            }
-//        }
+        String selection = input.next();
+        if (selection.equals("m")) {
+            displayMainMenu();
+        } else {
+            try {
+                handleMtnSelection(selection);
+            } catch (NumberFormatException e) {
+                System.out.println("Selection not valid...");
+            }
+        }
     }
 
     // MODIFIES: this
@@ -167,7 +172,7 @@ public class MountFinderApp {
         while (index >= mtnList.size()) {
             System.out.println("Selection not valid...");
             System.out.print("Choice: ");
-//            selection = input.next();
+            selection = input.next();
             index = Integer.parseInt(selection);
         }
         Mountain selectedMtn = mtnList.getMtnAtIndex(index);
@@ -178,15 +183,15 @@ public class MountFinderApp {
     // EFFECTS: handles adding new mountain to the list
     private void handleAddingNewMountain() {
         addNewMountainNameMenu();
-//      String mountainName = input.next();
-//        Mountain newMountain = new Mountain(mountainName);
-//        mtnList.addMountain(newMountain);
-//        System.out.println("You added " + mountainName + " mountain");
-//
-//        addNewMtnLiftPrice(newMountain);
-//        addNewMtnRentals(newMountain);
-//        addNewMtnDistanceFromHome(newMountain);
-//        System.out.println(mountainName + " mountain added successfully!");
+        String mountainName = input.next();
+        Mountain newMountain = new Mountain(mountainName);
+        mtnList.addMountain(newMountain);
+        System.out.println("You added " + mountainName + " mountain");
+
+        addNewMtnLiftPrice(newMountain);
+        addNewMtnRentals(newMountain);
+        addNewMtnDistanceFromHome(newMountain);
+        System.out.println(mountainName + " mountain added successfully!");
         displayMainMenu();
     }
 
@@ -196,34 +201,34 @@ public class MountFinderApp {
     //          if remainder is an empty string - asks for new input that is a number
     private void addNewMtnLiftPrice(Mountain newMountain) {
         addNewMountainPriceMenu();
-//        String inputValue = input.next();
-//        inputValue = inputValue.replaceAll("[^\\d.]", "");
-//        while (inputValue.equals("")) {
-//            System.out.println("Please enter a number");
-//            inputValue = input.next();
-//            inputValue = inputValue.replaceAll("[^\\d.]", "");
-//        }
-//        double liftPrice = Double.parseDouble(inputValue);
-//        newMountain.addLiftPrice(liftPrice);
-//        System.out.println("Lift price is $" + liftPrice);
+        String inputValue = input.next();
+        inputValue = inputValue.replaceAll("[^\\d.]", "");
+        while (inputValue.equals("")) {
+            System.out.println("Please enter a number");
+            inputValue = input.next();
+            inputValue = inputValue.replaceAll("[^\\d.]", "");
+        }
+        double liftPrice = Double.parseDouble(inputValue);
+        newMountain.addLiftPrice(liftPrice);
+        System.out.println("Lift price is $" + liftPrice);
     }
 
     // MODIFIES: Mountain, MountainList
     // EFFECTS: sets rental availability for new mountain
     private void addNewMtnRentals(Mountain newMountain) {
         addNewMountainRentalsMenu();
-//        String command = input.next();
-//        while (!command.equalsIgnoreCase("a")
-//                && !command.equalsIgnoreCase("f")) {
-//            System.out.println("Invalid option");
-//            System.out.print("Choice: ");
-//            command = input.next();
-//        }
-//        if (command.equals("a")) {
-//            newMountain.makeRentalsAvailable();
-//        } else {
-//            newMountain.makeRentalsNotAvailable();
-//        }
+        String command = input.next();
+        while (!command.equalsIgnoreCase("a")
+                && !command.equalsIgnoreCase("f")) {
+            System.out.println("Invalid option");
+            System.out.print("Choice: ");
+            command = input.next();
+        }
+        if (command.equals("a")) {
+            newMountain.makeRentalsAvailable();
+        } else {
+            newMountain.makeRentalsNotAvailable();
+        }
         System.out.println(newMountain.getRentalAvailabilityAnswer());
     }
 
@@ -234,15 +239,15 @@ public class MountFinderApp {
     private void addNewMtnDistanceFromHome(Mountain newMountain) {
         addNewMountainDistanceMenu();
         String city = user.getUserHomeCity();
-//        String inputValue = input.next();
-//        inputValue = inputValue.replaceAll("[^\\d.]", "");
-//        while (inputValue.equals("")) {
-//            System.out.println("Please enter a number");
-//            inputValue = input.next();
-//            inputValue = inputValue.replaceAll("[^\\d.]", "");
-//        }
-//        double distance = Double.parseDouble(inputValue);
-//        newMountain.setDistance(user.getUserHomeCity(), distance);
+        String inputValue = input.next();
+        inputValue = inputValue.replaceAll("[^\\d.]", "");
+        while (inputValue.equals("")) {
+            System.out.println("Please enter a number");
+            inputValue = input.next();
+            inputValue = inputValue.replaceAll("[^\\d.]", "");
+        }
+        double distance = Double.parseDouble(inputValue);
+        newMountain.setDistance(user.getUserHomeCity(), distance);
         System.out.println("The distance is " + newMountain.getDistance(city) + " km from " + city);
     }
 
@@ -315,15 +320,15 @@ public class MountFinderApp {
         System.out.println("\ty -> Yes, save and quit");
         System.out.println("\tn -> No, quit without saving");
         System.out.print("Choice: ");
-//        String command = input.next();
-//        if (command.equals("y")) {
-//            handleSave();
-//            keepGoing = false;
-//        } else if (command.equals("n")) {
-//            keepGoing = false;
-//        } else {
-//            processCommand1(command);
-//        }
+        String command = input.next();
+        if (command.equals("y")) {
+            handleSave(mtnList);
+            keepGoing = false;
+        } else if (command.equals("n")) {
+            keepGoing = false;
+        } else {
+            processCommand1(command);
+        }
     }
 
     // EFFECTS: displays all information for selected mountain

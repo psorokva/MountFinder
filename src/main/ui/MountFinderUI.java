@@ -21,7 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Represents application's main window frame.
+ * Represents Mountain Finder application main window frame.
+ * Contains all functionality related to displaying UI components.
  */
 public class MountFinderUI extends JFrame {
     private static final int WIDTH = 800;
@@ -53,7 +54,7 @@ public class MountFinderUI extends JFrame {
 
 
     /**
-     * Constructor sets up _______. Todo
+     * Constructor sets up MountFinderUI starting screen.
      */
     public MountFinderUI() {
         super("MountFinder App");
@@ -74,6 +75,8 @@ public class MountFinderUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // MODIFIES: this
+    // EFFECTS: opens city selection menu based on cities specified in MountFinderApp class
     private void openCitySelectionMenu() {
         JPanel citySelectionPanel = new JPanel();
 
@@ -90,6 +93,23 @@ public class MountFinderUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // EFFECTS: handles the action associated with showing menu options after city is selected
+    private class ShowMenuOptionsAction extends AbstractAction {
+
+        //Todo ask if need documentation
+        ShowMenuOptionsAction() {
+            super("Ok");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            processShowMenuOptions();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: displays menu buttons if city is selected
+    //          hides menu buttons if city is unselected
     private void processShowMenuOptions() {
         String selected = (String) this.cityDropdown.getSelectedItem();
         assert selected != null;
@@ -113,6 +133,8 @@ public class MountFinderUI extends JFrame {
         revalidate();
     }
 
+    // MODIFIES: this
+    // EFFECTS: hides Add New Mountain and Mountain Details panels
     private void removeOtherPanels() {
         if (addNewMtnFormVisible) {
             remove(tablePanel);
@@ -124,6 +146,8 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates and displayed main menu buttons through buttonPanel
     private void showMainMenu() {
         buttonPanel = new JPanel();
         buttonPanel.add(new JButton(new AddNewMountainAction()));
@@ -131,24 +155,13 @@ public class MountFinderUI extends JFrame {
         buttonPanel.add(new JButton(new CompareTwoMtnsAction()));
         buttonPanel.add(new JButton(new LoadListFromFileAction()));
         buttonPanel.add(new JButton(new SaveToFileAction()));
-        //todo add grey-out if list is empty
 
         add(buttonPanel, BorderLayout.PAGE_START);
     }
 
-    private class ShowMenuOptionsAction extends AbstractAction {
-
-        ShowMenuOptionsAction() {
-            super("Ok");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            processShowMenuOptions();
-        }
-    }
-
-    @SuppressWarnings("methodlength")
+    // MODIFIES: this
+    // EFFECTS: created form fields for adding new mountain
+    @SuppressWarnings("methodlength") //Todo ask if ok
     private void showAddNewMountainMenu() {
         tablePanel = new JPanel();
         tablePanel.setLayout(new GridLayout(5, 1));
@@ -179,6 +192,7 @@ public class MountFinderUI extends JFrame {
         revalidate();
     }
 
+    // EFFECTS: handles the action associated with adding new mountain
     private class AddNewMountainAction extends AbstractAction {
 
         AddNewMountainAction() {
@@ -194,6 +208,7 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // EFFECTS: handles the action associated with saving newly added mountain in the list
     private class SaveNewMountainAction extends AbstractAction {
 
         SaveNewMountainAction() {
@@ -224,7 +239,8 @@ public class MountFinderUI extends JFrame {
         }
     }
 
-
+    // MODIFIES: Mountain
+    // EFFECTS: creates new mountain using data entered through Add New Mountain form
     private void processSaveNewMountain() {
         String mtnName = String.valueOf(mtnNameField.getText());
         double liftPrice = Double.parseDouble(String.valueOf(mtnLiftPriceField.getText()));
@@ -241,10 +257,13 @@ public class MountFinderUI extends JFrame {
         mountain.setDistance(user.getUserHomeCity(), distance);
     }
 
+    // MODIFIES: MountainList
+    // EFFECTS: adds newly created mountain to the mountain list
     private void addNewMountainToList(Mountain mountain) {
         mountainList.addMountain(mountain);
     }
 
+    // EFFECTS: handles the action associated with displaying mountain list
     private class BrowseCurrentListAction extends AbstractAction {
 
         BrowseCurrentListAction() {
@@ -261,6 +280,8 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays current list of mountains
     private void displayCurrentList() {
         mountainListPanel = new JPanel();
         mountainListPanel.setLayout(new BoxLayout(mountainListPanel, BoxLayout.PAGE_AXIS));
@@ -276,6 +297,7 @@ public class MountFinderUI extends JFrame {
         revalidate();
     }
 
+    // EFFECTS: handles the action associated with displaying information for specific mountain
     private class DisplayMtnInfoAction extends AbstractAction {
         Mountain selectedMtn;
 
@@ -293,6 +315,30 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays information about the specified mountain
+    //          price and distance text color can be changed, default in the app is black
+    private void processDisplayingMtnDetails(Mountain mountain, Color priceColor, Color distanceColor) {
+        mountainDetailsPanel = new JPanel();
+        mountainDetailsPanel.setLayout(new GridLayout(4, 2));
+        mountainDetailsPanel.add(new JLabel("Name:"));
+        mountainDetailsPanel.add(new JLabel(mountain.getMtnName()));
+        mountainDetailsPanel.add(new JLabel("Lift ticket price:"));
+        JLabel liftPriceLabel = new JLabel("$" + mountain.getLiftPrice());
+        liftPriceLabel.setForeground(priceColor);
+        mountainDetailsPanel.add(liftPriceLabel);
+        mountainDetailsPanel.add(new JLabel(mountain.getRentalAvailabilityAnswer()));
+        mountainDetailsPanel.add(new JLabel(""));
+        mountainDetailsPanel.add(new JLabel("Distance from " + user.getUserHomeCity() + " :"));
+        JLabel distanceLabel = new JLabel(mountain.getDistance(user.getUserHomeCity()) + " km");
+        distanceLabel.setForeground(distanceColor);
+        mountainDetailsPanel.add(distanceLabel);
+        add(mountainDetailsPanel);
+        repaint();
+        revalidate();
+    }
+
+    // EFFECTS: handles the action associated with comparing two mountains
     private class CompareTwoMtnsAction extends AbstractAction {
 
         CompareTwoMtnsAction() {
@@ -307,6 +353,8 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads JCheckBox for each mountain in the list
     private void loadCheckBoxFrame() {
         ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
         checkBoxFrame = new JFrame("Compare");
@@ -329,6 +377,7 @@ public class MountFinderUI extends JFrame {
         add(checkBoxFrame);
     }
 
+    // EFFECTS: handles the action associated with comparing two selected mountains
     private class PerformComparisonAction extends AbstractAction {
         ArrayList<JCheckBox> checkBoxes;
 
@@ -354,6 +403,7 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // EFFECTS: helper method to compare lift prices and re-color them accordingly
     private ArrayList<Color> changePriceColor(Mountain m1, Mountain m2) {
         ArrayList<Color> priceColors = new ArrayList<>();
         Color mtn1Price = black;
@@ -373,6 +423,7 @@ public class MountFinderUI extends JFrame {
         return priceColors;
     }
 
+    // EFFECTS: helper method to compare distances and re-color them accordingly
     private ArrayList<Color> changeDistanceColor(Mountain m1, Mountain m2) {
         ArrayList<Color> distColors = new ArrayList<>();
         String city = user.getUserHomeCity();
@@ -393,27 +444,7 @@ public class MountFinderUI extends JFrame {
         return distColors;
     }
 
-
-    private void processDisplayingMtnDetails(Mountain mountain, Color priceColor, Color distanceColor) {
-        mountainDetailsPanel = new JPanel();
-        mountainDetailsPanel.setLayout(new GridLayout(4,2));
-        mountainDetailsPanel.add(new JLabel("Name:"));
-        mountainDetailsPanel.add(new JLabel(mountain.getMtnName()));
-        mountainDetailsPanel.add(new JLabel("Lift ticket price:"));
-        JLabel liftPriceLabel = new JLabel("$" + mountain.getLiftPrice());
-        liftPriceLabel.setForeground(priceColor);
-        mountainDetailsPanel.add(liftPriceLabel);
-        mountainDetailsPanel.add(new JLabel(mountain.getRentalAvailabilityAnswer()));
-        mountainDetailsPanel.add(new JLabel(""));
-        mountainDetailsPanel.add(new JLabel("Distance from " + user.getUserHomeCity() + " :"));
-        JLabel distanceLabel = new JLabel(mountain.getDistance(user.getUserHomeCity()) + " km");
-        distanceLabel.setForeground(distanceColor);
-        mountainDetailsPanel.add(distanceLabel);
-        add(mountainDetailsPanel);
-        repaint();
-        revalidate();
-    }
-
+    // EFFECTS: handles the action associated with loading mountain list from file
     private class LoadListFromFileAction extends AbstractAction {
 
         LoadListFromFileAction() {
@@ -426,6 +457,8 @@ public class MountFinderUI extends JFrame {
         }
     }
 
+    // MODIFIES: this, MountainList
+    // EFFECTS: loads mountain list from saved file
     private void processLoadingDataFromFile() {
         mountainList = mfApp.loadSavedList();
         JOptionPane popup = new JOptionPane("Loaded List 1!");
@@ -438,6 +471,7 @@ public class MountFinderUI extends JFrame {
         displayCurrentList();
     }
 
+    // EFFECTS: handles the action associated with saving current mountain list to file
     private class SaveToFileAction extends AbstractAction {
 
         SaveToFileAction() {
@@ -451,6 +485,8 @@ public class MountFinderUI extends JFrame {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: saved current mountain list to file
     private void processSavingDataToFile() {
         mfApp.handleSave(mountainList);
         JOptionPane popup = new JOptionPane("Saved as List 1!");
@@ -462,6 +498,7 @@ public class MountFinderUI extends JFrame {
         dialog.setVisible(true);
     }
 
+    // EFFECTS: helper function to restrict input only to numbers for price and distance fields
     // Adapted from: https://stackoverflow.com/questions/20541230/allow-only-numbers-in-jtextfield
     private void acceptOnlyNumbers(JTextField field) {
         ((AbstractDocument) field.getDocument()).setDocumentFilter(new DocumentFilter() {
