@@ -13,10 +13,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +26,9 @@ import java.util.regex.Pattern;
 public class MountFinderUI extends JFrame {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
+    private final Color black = Color.BLACK;
+    private final Color green = Color.GREEN;
+    private final Color red = Color.RED;
 
     private JComboBox<String> cityDropdown;
     private JPanel buttonPanel;
@@ -36,6 +39,7 @@ public class MountFinderUI extends JFrame {
     private JTextField mtnLiftPriceField;
     private JRadioButton mtnRentalsAvailable;
     private JTextField mtnDistanceField;
+    private JFrame checkBoxFrame;
 
     private final MountFinderApp mfApp;
     private final User user;
@@ -71,16 +75,77 @@ public class MountFinderUI extends JFrame {
     }
 
     private void openCitySelectionMenu() {
+        JPanel citySelectionPanel = new JPanel();
+
         JLabel label = new JLabel("Select city");
         cityDropdown = new JComboBox<>(mfApp.getCities());
-        add(label);
-        add(cityDropdown);
-        add(new JButton(new ShowMenuOptionsAction()));
+        citySelectionPanel.add(label);
+        citySelectionPanel.add(cityDropdown);
+        citySelectionPanel.add(new JButton(new ShowMenuOptionsAction()));
 
         pack();
+        add(citySelectionPanel);
         setVisible(true);
         setLocationRelativeTo(null);
         setLocationRelativeTo(null);
+    }
+
+    private void processShowMenuOptions() {
+        String selected = (String) this.cityDropdown.getSelectedItem();
+        assert selected != null;
+        user.setUserHomeCity(selected);
+        if (!selected.equals("")) {
+            if (!mainMenuVisible) {
+                showMainMenu();
+                mainMenuVisible = true;
+            }
+            // if city is unselected
+        } else {
+            if (mainMenuVisible) {
+                remove(buttonPanel);
+                remove(mountainListPanel);
+                mainMenuVisible = false;
+                mtnListVisible = false;
+            }
+            removeOtherPanels();
+        }
+        repaint();
+        revalidate();
+    }
+
+    private void removeOtherPanels() {
+        if (addNewMtnFormVisible) {
+            remove(tablePanel);
+            addNewMtnFormVisible = false;
+        }
+        if (mtnDetailsMenuVisible) {
+            remove(mountainDetailsPanel);
+            mtnDetailsMenuVisible = false;
+        }
+    }
+
+    private void showMainMenu() {
+        buttonPanel = new JPanel();
+        buttonPanel.add(new JButton(new AddNewMountainAction()));
+        buttonPanel.add(new JButton(new BrowseCurrentListAction()));
+        buttonPanel.add(new JButton(new CompareTwoMtnsAction()));
+        buttonPanel.add(new JButton(new LoadListFromFileAction()));
+        buttonPanel.add(new JButton(new SaveToFileAction()));
+        //todo add grey-out if list is empty
+
+        add(buttonPanel, BorderLayout.PAGE_START);
+    }
+
+    private class ShowMenuOptionsAction extends AbstractAction {
+
+        ShowMenuOptionsAction() {
+            super("Ok");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            processShowMenuOptions();
+        }
     }
 
     @SuppressWarnings("methodlength")
@@ -114,66 +179,6 @@ public class MountFinderUI extends JFrame {
         revalidate();
     }
 
-    private void processShowMenuOptions() {
-        String selected = (String) this.cityDropdown.getSelectedItem();
-        assert selected != null;
-        user.setUserHomeCity(selected);
-        if (!selected.equals("")) {
-            if (!mainMenuVisible) {
-                showMainMenu();
-                mainMenuVisible = true;
-            }
-            // if city is unselected
-        } else {
-            if (mainMenuVisible) {
-                remove(buttonPanel);
-                mainMenuVisible = false;
-            }
-            removeOtherPanels();
-        }
-        repaint();
-        revalidate();
-    }
-
-    private void removeOtherPanels() {
-        if (addNewMtnFormVisible) {
-            remove(tablePanel);
-            addNewMtnFormVisible = false;
-        }
-        if (mtnListVisible) {
-            remove(mountainListPanel);
-            mtnListVisible = false;
-        }
-        if (mtnDetailsMenuVisible) {
-            remove(mountainDetailsPanel);
-            mtnDetailsMenuVisible = false;
-        }
-    }
-
-    private void showMainMenu() {
-        buttonPanel = new JPanel();
-        buttonPanel.add(new JButton(new AddNewMountainAction()));
-        buttonPanel.add(new JButton(new BrowseCurrentListAction()));
-        buttonPanel.add(new JButton(new LoadListFromFileAction()));
-        buttonPanel.add(new JButton(new SaveToFileAction()));
-        //todo add grey-out if list is empty
-
-        add(buttonPanel);
-    }
-
-    private class ShowMenuOptionsAction extends AbstractAction {
-
-        ShowMenuOptionsAction() {
-            super("Ok");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            processShowMenuOptions();
-        }
-    }
-
-
     private class AddNewMountainAction extends AbstractAction {
 
         AddNewMountainAction() {
@@ -182,11 +187,10 @@ public class MountFinderUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent evt) {
+            remove(mountainListPanel);
             removeOtherPanels();
-            if (!addNewMtnFormVisible) {
-                showAddNewMountainMenu();
-                addNewMtnFormVisible = true;
-            }
+            showAddNewMountainMenu();
+            addNewMtnFormVisible = true;
         }
     }
 
@@ -213,11 +217,13 @@ public class MountFinderUI extends JFrame {
             popup.setIcon(icon);
             final JDialog dialog = popup.createDialog("Success");
             dialog.setVisible(true);
-            remove(tablePanel);//todo Display list
+            remove(tablePanel);
+            displayCurrentList();
             repaint();
             revalidate();
         }
     }
+
 
     private void processSaveNewMountain() {
         String mtnName = String.valueOf(mtnNameField.getText());
@@ -258,12 +264,14 @@ public class MountFinderUI extends JFrame {
     private void displayCurrentList() {
         mountainListPanel = new JPanel();
         mountainListPanel.setLayout(new BoxLayout(mountainListPanel, BoxLayout.PAGE_AXIS));
+        mountainListPanel.add(new JLabel("Current List:"));
+
         for (Mountain m : mountainList.getMountains()) {
             JButton btn = new JButton(new DisplayMtnInfoAction(m));
             btn.setText(m.getMtnName());
             mountainListPanel.add(btn);
         }
-        add(mountainListPanel);
+        add(mountainListPanel, BorderLayout.LINE_START);
         repaint();
         revalidate();
     }
@@ -279,21 +287,128 @@ public class MountFinderUI extends JFrame {
         public void actionPerformed(ActionEvent evt) {
             removeOtherPanels();
             if (!mtnDetailsMenuVisible) {
-                processDisplayingMtnDetails(selectedMtn);
+                processDisplayingMtnDetails(selectedMtn, black, black);
                 mtnDetailsMenuVisible = true;
             }
         }
     }
 
-    private void processDisplayingMtnDetails(Mountain mountain) {
+    private class CompareTwoMtnsAction extends AbstractAction {
+
+        CompareTwoMtnsAction() {
+            super("Compare two mountains");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            removeOtherPanels();
+            loadCheckBoxFrame();
+
+        }
+    }
+
+    private void loadCheckBoxFrame() {
+        ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
+        checkBoxFrame = new JFrame("Compare");
+        JLabel compareMtnsLabel = new JLabel("Select two mountains to compare:");
+        compareMtnsLabel.setBounds(50, 70, 300, 20);
+        checkBoxFrame.add(compareMtnsLabel);
+        for (int i = 0; i < mountainList.getMountains().size(); i++) {
+            JCheckBox checkBox = new JCheckBox(mountainList.getMtnAtIndex(i).getMtnName());
+            checkBox.setBounds(50, 100 + (30 * i), 150, 20);
+            checkBoxFrame.add(checkBox);
+            checkBoxes.add(checkBox);
+        }
+        JButton compareBtn = new JButton("Compare");
+        compareBtn.setBounds(50, 100 + (30 * mountainList.size()), 100, 20);
+        compareBtn.setAction(new PerformComparisonAction(checkBoxes));
+        checkBoxFrame.add(compareBtn);
+        checkBoxFrame.setSize(400, 400);
+        checkBoxFrame.setLayout(null);
+        checkBoxFrame.setVisible(true);
+        add(checkBoxFrame);
+    }
+
+    private class PerformComparisonAction extends AbstractAction {
+        ArrayList<JCheckBox> checkBoxes;
+
+        PerformComparisonAction(ArrayList<JCheckBox> checkBoxes) {
+            super("Compare");
+            this.checkBoxes = checkBoxes;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            ArrayList<Mountain> selectedMtns = new ArrayList<>();
+            for (JCheckBox checkBox : checkBoxes) {
+                if (checkBox.isSelected()) {
+                    String selectedMtnName = checkBox.getText();
+                    selectedMtns.add(mountainList.getMtnByName(selectedMtnName));
+                }
+            }
+            Mountain m1 = selectedMtns.get(0);
+            Mountain m2 = selectedMtns.get(1);
+
+            processDisplayingMtnDetails(m1, changePriceColor(m1, m2).get(0), changeDistanceColor(m1, m2).get(0));
+            processDisplayingMtnDetails(m2, changePriceColor(m1, m2).get(1), changeDistanceColor(m1, m2).get(1));
+        }
+    }
+
+    private ArrayList<Color> changePriceColor(Mountain m1, Mountain m2) {
+        ArrayList<Color> priceColors = new ArrayList<>();
+        Color mtn1Price = black;
+        Color mtn2Price = black;
+
+        if (m1.getLiftPrice() < m2.getLiftPrice()) {
+            mtn1Price = green;
+            mtn2Price = red;
+        } else if (m1.getLiftPrice() > m2.getLiftPrice()) {
+            mtn1Price = red;
+            mtn2Price = green;
+        }
+
+        priceColors.add(mtn1Price);
+        priceColors.add(mtn2Price);
+
+        return priceColors;
+    }
+
+    private ArrayList<Color> changeDistanceColor(Mountain m1, Mountain m2) {
+        ArrayList<Color> distColors = new ArrayList<>();
+        String city = user.getUserHomeCity();
+        Color mtn1Dist = black;
+        Color mtn2Dist = black;
+
+        if (m1.getDistance(city) < m2.getDistance(city)) {
+            mtn1Dist = green;
+            mtn2Dist = red;
+        } else if (m1.getDistance(city) > m2.getDistance(city)) {
+            mtn1Dist = red;
+            mtn2Dist = green;
+        }
+
+        distColors.add(mtn1Dist);
+        distColors.add(mtn2Dist);
+
+        return distColors;
+    }
+
+
+    private void processDisplayingMtnDetails(Mountain mountain, Color priceColor, Color distanceColor) {
         mountainDetailsPanel = new JPanel();
+        mountainDetailsPanel.setLayout(new GridLayout(4,2));
         mountainDetailsPanel.add(new JLabel("Name:"));
         mountainDetailsPanel.add(new JLabel(mountain.getMtnName()));
         mountainDetailsPanel.add(new JLabel("Lift ticket price:"));
-        mountainDetailsPanel.add(new JLabel("$" + mountain.getLiftPrice()));
+        JLabel liftPriceLabel = new JLabel("$" + mountain.getLiftPrice());
+        liftPriceLabel.setForeground(priceColor);
+        mountainDetailsPanel.add(liftPriceLabel);
         mountainDetailsPanel.add(new JLabel(mountain.getRentalAvailabilityAnswer()));
+        mountainDetailsPanel.add(new JLabel(""));
         mountainDetailsPanel.add(new JLabel("Distance from " + user.getUserHomeCity() + " :"));
-        mountainDetailsPanel.add((new JLabel(mountain.getDistance(user.getUserHomeCity()) + " km")));
+        JLabel distanceLabel = new JLabel(mountain.getDistance(user.getUserHomeCity()) + " km");
+        distanceLabel.setForeground(distanceColor);
+        mountainDetailsPanel.add(distanceLabel);
         add(mountainDetailsPanel);
         repaint();
         revalidate();
@@ -320,6 +435,7 @@ public class MountFinderUI extends JFrame {
         timer.setRepeats(false);
         timer.start();
         dialog.setVisible(true);
+        displayCurrentList();
     }
 
     private class SaveToFileAction extends AbstractAction {
@@ -332,6 +448,7 @@ public class MountFinderUI extends JFrame {
         public void actionPerformed(ActionEvent evt) {
             processSavingDataToFile();
         }
+
     }
 
     private void processSavingDataToFile() {
@@ -362,3 +479,7 @@ public class MountFinderUI extends JFrame {
         });
     }
 }
+
+
+
+
