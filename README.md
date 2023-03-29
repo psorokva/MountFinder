@@ -28,6 +28,32 @@
 - As a user, I want to have the option to save my mountain list and to be reminded to save before quitting
 - As a user, I want to be given the option to load my mountain list from file
 
+# Instructions for Grader
+### To add new mountains to the mountain list (the first required action):
+1. Start the application by running Main
+2. Select a city from the dropdown (Vancouver) and click "Ok"
+3. Select "Add new mountain" option
+4. Fill out the form and select "Save mountain". This will add a new mountain to the list.
+
+### To compare two mountains (the second required action):
+1. Start the application by running Main
+2. Select a city from the dropdown (Vancouver) and click "Ok"
+3. Add at least 2 mountains through "Add new mountain" option or select "Load list from file"
+4. Select "Compare two mountains"
+5. In the new window, select 2 mountains that you want to compare and click "Compare"
+*This will display information of 2 mountains side by side and if price and distance values are
+not equal, will change the font to red for higher value and green for lower value.*
+
+### Visual component:
+- Visual component is visible after adding new mountain in the Success pop-up.
+
+### To save the state of the application to file:
+- Select "Save list to file" option in the menu.
+
+### To load the state of the application from file:
+1. Select "Load list from file" option in the menu.
+
+
 ## References
 [JsonSerializationDemo](https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo) was adapted as the basis for 
 the persistence module of this app.

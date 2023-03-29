@@ -117,7 +117,9 @@ public class MountFinderUI extends JFrame {
         if (!selected.equals("")) {
             if (!mainMenuVisible) {
                 showMainMenu();
+                displayCurrentList();
                 mainMenuVisible = true;
+                mtnListVisible = true;
             }
             // if city is unselected
         } else {
@@ -244,7 +246,7 @@ public class MountFinderUI extends JFrame {
     private void processSaveNewMountain() {
         String mtnName = String.valueOf(mtnNameField.getText());
         double liftPrice = Double.parseDouble(String.valueOf(mtnLiftPriceField.getText()));
-        boolean rentalAvailable = mtnRentalsAvailable.getAccessibleContext() != null;
+        boolean rentalAvailable = mtnRentalsAvailable.isSelected();
         double distance = Double.parseDouble(String.valueOf(mtnDistanceField.getText()));
 
         mountain = new Mountain(mtnName);

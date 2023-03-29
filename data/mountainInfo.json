@@ -1,12 +1,43 @@
 {
-  "mountains": [{
-    "distances": [{
-      "city": "Vancouver",
-      "distanceFromCity": 123
-    }],
-    "lift price": "75.0",
-    "name": "Grouse",
-    "rental availability": "true"
-  }],
-    "name": "List 1"
+  "mountains": [
+    {
+      "distances": [
+        {
+          "city": "UBC",
+          "distanceFromCity": 39.9
+        },
+        {
+          "city": "Richmond",
+          "distanceFromCity": 54.8
+        },
+        {
+          "city": "Vancouver",
+          "distanceFromCity": 30.8
+        }
+      ],
+      "lift price": "80.0",
+      "name": "Cypress",
+      "rental availability": "true"
+    },
+    {
+      "distances": [
+        {
+          "city": "UBC",
+          "distanceFromCity": 37.1
+        },
+        {
+          "city": "Richmond",
+          "distanceFromCity": 39.2
+        },
+        {
+          "city": "Vancouver",
+          "distanceFromCity": 26.4
+        }
+      ],
+      "lift price": "70.0",
+      "name": "Seymour",
+      "rental availability": "false"
+    }
+  ],
+  "name": "Sample List"
 }
