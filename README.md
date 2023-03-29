@@ -41,8 +41,18 @@
 3. Add at least 2 mountains through "Add new mountain" option or select "Load list from file"
 4. Select "Compare two mountains"
 5. In the new window, select 2 mountains that you want to compare and click "Compare"
-*This will display information of 2 mountains side by side and if price and distance values are
+- *This will display information of 2 mountains side by side and if price and distance values are
 not equal, will change the font to red for higher value and green for lower value.*
+
+### To enter distance to mountain from different city (another action):
+1. Start the application by running Main
+2. Select a city from the dropdown (Vancouver) and click "Ok"
+3. Add a new mountain through "Add new mountain" option or select "Load list from file"
+4. Open this mountain and note the distance
+5. Change to a different city in the dropdown and click "Ok"
+6. Open the same mountain
+- *If this mountain already has a distance entered for new city, it will display the new distance.
+If distance was not previously saved, it will display a new field where it can be entered and saved.*
 
 ### Visual component:
 - Visual component is visible after adding new mountain in the Success pop-up.

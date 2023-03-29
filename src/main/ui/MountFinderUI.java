@@ -53,6 +53,7 @@ public class MountFinderUI extends JFrame {
     private boolean addNewMtnFormVisible = false;
     private boolean mtnListVisible = false;
     private boolean mtnDetailsMenuVisible = false;
+    private boolean addNewDistancePanelVisible = false;
 
 
     /**
@@ -152,6 +153,10 @@ public class MountFinderUI extends JFrame {
         if (mtnDetailsMenuVisible) {
             remove(mountainDetailsPanel);
             mtnDetailsMenuVisible = false;
+        }
+        if (addNewDistancePanelVisible) {
+            remove(enterDistancePanel);
+            addNewDistancePanelVisible = false;
         }
     }
 
@@ -354,9 +359,7 @@ public class MountFinderUI extends JFrame {
     //          price and distance text color can be changed, default in the app is black
     //          if city was changed and distance is currently 0, calls method to show new panel
     private void processDisplayingMtnDetails(Mountain mountain, Color priceColor, Color distanceColor) {
-        if (mountain.getDistance(user.getUserHomeCity()) == 0) {
-            showEnterDistancePanel(mountain);
-        }
+        handleDistanceToCurrentCityMissing(mountain);
         mountainDetailsPanel = new JPanel();
         mountainDetailsPanel.setLayout(new GridLayout(4, 2));
         mountainDetailsPanel.add(new JLabel("Name:"));
@@ -376,16 +379,25 @@ public class MountFinderUI extends JFrame {
         revalidate();
     }
 
+    // EFFECTS: helper method to check if distance from currently selected city is 0
+    private void handleDistanceToCurrentCityMissing(Mountain mountain) {
+        if (mountain.getDistance(user.getUserHomeCity()) == 0) {
+            showEnterDistancePanel(mountain);
+        }
+    }
+
     // MODIFIES: this
     // EFFECTS: displays a panel where user can enter distance value if city was changed
     private void showEnterDistancePanel(Mountain mountain) {
         enterDistancePanel = new JPanel();
-        enterDistancePanel.add(new JLabel("Please enter distance in km from " + user.getUserHomeCity() + " :"));
+        enterDistancePanel.add(new JLabel("Please enter distance in km from "
+                + user.getUserHomeCity() + " to " + mountain.getMtnName() + " :"));
         newMtnDistanceField = new JTextField(10);
         acceptOnlyNumbers(newMtnDistanceField);
         enterDistancePanel.add(newMtnDistanceField);
         enterDistancePanel.add(new JButton(new SaveDistanceAction(mountain)));
         add(enterDistancePanel);
+        addNewDistancePanelVisible = true;
         repaint();
         revalidate();
     }
@@ -415,6 +427,7 @@ public class MountFinderUI extends JFrame {
             timer.start();
             dialog.setVisible(true);
             remove(enterDistancePanel);
+            addNewDistancePanelVisible = false;
             repaint();
             revalidate();
         }
@@ -485,7 +498,9 @@ public class MountFinderUI extends JFrame {
             for (JCheckBox checkBox : checkBoxes) {
                 if (checkBox.isSelected()) {
                     String selectedMtnName = checkBox.getText();
-                    selectedMtns.add(mountainList.getMtnByName(selectedMtnName));
+                    Mountain currentMtn = mountainList.getMtnByName(selectedMtnName);
+
+                    selectedMtns.add(currentMtn);
                 }
             }
             Mountain m1 = selectedMtns.get(0);
