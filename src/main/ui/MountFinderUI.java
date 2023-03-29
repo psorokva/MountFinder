@@ -36,10 +36,12 @@ public class MountFinderUI extends JFrame {
     private JPanel tablePanel;
     private JPanel mountainListPanel;
     private JPanel mountainDetailsPanel;
+    private JPanel enterDistancePanel;
     private JTextField mtnNameField;
     private JTextField mtnLiftPriceField;
     private JRadioButton mtnRentalsAvailable;
     private JTextField mtnDistanceField;
+    private JTextField newMtnDistanceField;
     private JFrame checkBoxFrame;
 
     private final MountFinderApp mfApp;
@@ -96,11 +98,14 @@ public class MountFinderUI extends JFrame {
     // EFFECTS: handles the action associated with showing menu options after city is selected
     private class ShowMenuOptionsAction extends AbstractAction {
 
-        //Todo ask if need documentation
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Ok"
         ShowMenuOptionsAction() {
             super("Ok");
         }
 
+        // MODIFIES: this
+        // EFFECTS: calls method to show menu options after city is selected
         @Override
         public void actionPerformed(ActionEvent evt) {
             processShowMenuOptions();
@@ -121,6 +126,7 @@ public class MountFinderUI extends JFrame {
                 mainMenuVisible = true;
                 mtnListVisible = true;
             }
+//            remove(mountainDetailsPanel);
             // if city is unselected
         } else {
             if (mainMenuVisible) {
@@ -129,8 +135,9 @@ public class MountFinderUI extends JFrame {
                 mainMenuVisible = false;
                 mtnListVisible = false;
             }
-            removeOtherPanels();
+//            removeOtherPanels();
         }
+        removeOtherPanels();
         repaint();
         revalidate();
     }
@@ -197,10 +204,15 @@ public class MountFinderUI extends JFrame {
     // EFFECTS: handles the action associated with adding new mountain
     private class AddNewMountainAction extends AbstractAction {
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for "Add new mountain" button
         AddNewMountainAction() {
             super("Add new mountain");
         }
 
+        // MODIFIES: this
+        // EFFECTS: removed all unnecessary panel and calls method to show
+        //          add new mountain fields
         @Override
         public void actionPerformed(ActionEvent evt) {
             remove(mountainListPanel);
@@ -213,10 +225,14 @@ public class MountFinderUI extends JFrame {
     // EFFECTS: handles the action associated with saving newly added mountain in the list
     private class SaveNewMountainAction extends AbstractAction {
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Save mountain"
         SaveNewMountainAction() {
             super("Save mountain");
         }
 
+        // MODIFIES: this
+        // EFFECTS: calls the method to save new mountain data and then displays success pop-up
         //Image credit: <a href="https://www.freepik.com/free-vector/cute-astronaut-playing-snowboard-cartoon-vector-icon-illustration-science-sport-icon-isolated_33777470.htm#query=snowboarding&position=2&from_view=keyword&track=sph#position=2&query=snowboarding">Image by catalyststuff</a> on Freepik
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -268,10 +284,15 @@ public class MountFinderUI extends JFrame {
     // EFFECTS: handles the action associated with displaying mountain list
     private class BrowseCurrentListAction extends AbstractAction {
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Browse current list"
         BrowseCurrentListAction() {
             super("Browse current list");
         }
 
+        // MODIFIES: this
+        // EFFECTS: calls method to display current mountain list if it's not already visible
+        //          removed other unnecessary panels
         @Override
         public void actionPerformed(ActionEvent evt) {
             removeOtherPanels();
@@ -285,14 +306,20 @@ public class MountFinderUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: displays current list of mountains
     private void displayCurrentList() {
+        if (mtnListVisible) {
+            remove(mountainListPanel);
+        }
         mountainListPanel = new JPanel();
         mountainListPanel.setLayout(new BoxLayout(mountainListPanel, BoxLayout.PAGE_AXIS));
         mountainListPanel.add(new JLabel("Current List:"));
-
-        for (Mountain m : mountainList.getMountains()) {
-            JButton btn = new JButton(new DisplayMtnInfoAction(m));
-            btn.setText(m.getMtnName());
-            mountainListPanel.add(btn);
+        if (mountainList.getMountains().isEmpty()) {
+            mountainListPanel.add(new JLabel("List is empty"));
+        } else {
+            for (Mountain m : mountainList.getMountains()) {
+                JButton btn = new JButton(new DisplayMtnInfoAction(m));
+                btn.setText(m.getMtnName());
+                mountainListPanel.add(btn);
+            }
         }
         add(mountainListPanel, BorderLayout.LINE_START);
         repaint();
@@ -303,10 +330,15 @@ public class MountFinderUI extends JFrame {
     private class DisplayMtnInfoAction extends AbstractAction {
         Mountain selectedMtn;
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "MountainName"
         DisplayMtnInfoAction(Mountain m) {
             selectedMtn = m;
         }
 
+        // MODIFIES: this
+        // EFFECTS: removes unnecessary panels and displays data for specified mountain
+        //          default font color is black for price and distance
         @Override
         public void actionPerformed(ActionEvent evt) {
             removeOtherPanels();
@@ -320,7 +352,11 @@ public class MountFinderUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: displays information about the specified mountain
     //          price and distance text color can be changed, default in the app is black
+    //          if city was changed and distance is currently 0, calls method to show new panel
     private void processDisplayingMtnDetails(Mountain mountain, Color priceColor, Color distanceColor) {
+        if (mountain.getDistance(user.getUserHomeCity()) == 0) {
+            showEnterDistancePanel(mountain);
+        }
         mountainDetailsPanel = new JPanel();
         mountainDetailsPanel.setLayout(new GridLayout(4, 2));
         mountainDetailsPanel.add(new JLabel("Name:"));
@@ -340,18 +376,67 @@ public class MountFinderUI extends JFrame {
         revalidate();
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays a panel where user can enter distance value if city was changed
+    private void showEnterDistancePanel(Mountain mountain) {
+        enterDistancePanel = new JPanel();
+        enterDistancePanel.add(new JLabel("Please enter distance in km from " + user.getUserHomeCity() + " :"));
+        newMtnDistanceField = new JTextField(10);
+        acceptOnlyNumbers(newMtnDistanceField);
+        enterDistancePanel.add(newMtnDistanceField);
+        enterDistancePanel.add(new JButton(new SaveDistanceAction(mountain)));
+        add(enterDistancePanel);
+        repaint();
+        revalidate();
+    }
+
+    // EFFECTS: handles the action associated with saving distance value for additional cities
+    private class SaveDistanceAction extends AbstractAction {
+        Mountain selectedMtn;
+
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Save"
+        SaveDistanceAction(Mountain m) {
+            super("Save");
+            selectedMtn = m;
+        }
+
+        // MODIFIES: this
+        // EFFECTS: saves user input as distance value and closes the panel
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            double distance = Double.parseDouble(String.valueOf(newMtnDistanceField.getText()));
+            selectedMtn.setDistance(user.getUserHomeCity(), distance);
+            JOptionPane popup = new JOptionPane("Distance added!");
+            // Adapted from https://stackoverflow.com/questions/5966005/create-a-plain-message-box-that-disappears-after-a-few-seconds-in-java
+            final JDialog dialog = popup.createDialog("Success");
+            Timer timer = new Timer(1200, e -> dialog.setVisible(false));
+            timer.setRepeats(false);
+            timer.start();
+            dialog.setVisible(true);
+            remove(enterDistancePanel);
+            repaint();
+            revalidate();
+        }
+    }
+
+
     // EFFECTS: handles the action associated with comparing two mountains
     private class CompareTwoMtnsAction extends AbstractAction {
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Compare two mountains"
         CompareTwoMtnsAction() {
             super("Compare two mountains");
         }
 
+        // MODIFIES: this
+        // EFFECTS: removes unnecessary panels and calls method to display the frame
+        //          with checkboxes for each mountain in the list
         @Override
         public void actionPerformed(ActionEvent evt) {
             removeOtherPanels();
             loadCheckBoxFrame();
-
         }
     }
 
@@ -383,11 +468,17 @@ public class MountFinderUI extends JFrame {
     private class PerformComparisonAction extends AbstractAction {
         ArrayList<JCheckBox> checkBoxes;
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Compare"
         PerformComparisonAction(ArrayList<JCheckBox> checkBoxes) {
             super("Compare");
             this.checkBoxes = checkBoxes;
         }
 
+        // MODIFIES: this
+        // EFFECTS: checks which checkboxes were selected and adds those mountains to comparison list.
+        //          then calls method to display 2 mountains side by side and helper methods
+        //          to change fonts of price and distance
         @Override
         public void actionPerformed(ActionEvent evt) {
             ArrayList<Mountain> selectedMtns = new ArrayList<>();
@@ -449,10 +540,14 @@ public class MountFinderUI extends JFrame {
     // EFFECTS: handles the action associated with loading mountain list from file
     private class LoadListFromFileAction extends AbstractAction {
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Load list from file"
         LoadListFromFileAction() {
             super("Load list from file");
         }
 
+        // MODIFIES: this
+        // EFFECTS: calls method that handles loading data from file
         @Override
         public void actionPerformed(ActionEvent evt) {
             processLoadingDataFromFile();
@@ -476,10 +571,14 @@ public class MountFinderUI extends JFrame {
     // EFFECTS: handles the action associated with saving current mountain list to file
     private class SaveToFileAction extends AbstractAction {
 
+        // MODIFIES: this
+        // EFFECTS: constructs the action for button "Save list to file"
         SaveToFileAction() {
             super("Save list to file");
         }
 
+        // MODIFIES: this
+        // EFFECTS: calls method that handles saving data to file
         @Override
         public void actionPerformed(ActionEvent evt) {
             processSavingDataToFile();
