@@ -19,6 +19,7 @@ public class Distance implements Writable {
     public Distance(String city, double distanceFromCity) {
         this.city = city;
         this.distanceFromCity = distanceFromCity;
+        EventLog.getInstance().logEvent(new Event("Distance to the mountain added."));
     }
 
     // EFFECTS: returns city name

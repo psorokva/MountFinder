@@ -63,7 +63,44 @@ If distance was not previously saved, it will display a new field where it can b
 ### To load the state of the application from file:
 1. Select "Load list from file" option in the menu.
 
+### Phase 4: Task 2
+Tue Apr 04 15:38:43 PDT 2023 City set to Vancouver.  
+Tue Apr 04 15:38:45 PDT 2023 
+Distance to the mountain added.  
+Tue Apr 04 15:38:45 PDT 2023
+Lift ticket price added.  
+Tue Apr 04 15:38:45 PDT 2023
+Rentals set to available.  
+Tue Apr 04 15:38:45 PDT 2023
+Mountain Grouse added to the mountain list.  
+Tue Apr 04 15:38:45 PDT 2023
+Finished loading mountain Grouse from file.  
+Tue Apr 04 15:38:45 PDT 2023
+Distance to the mountain added.  
+Tue Apr 04 15:38:45 PDT 2023
+Lift ticket price added.  
+Tue Apr 04 15:38:45 PDT 2023
+Rentals set to not available.  
+Tue Apr 04 15:38:45 PDT 2023
+Mountain Second mountain added to the mountain list.  
+Tue Apr 04 15:38:45 PDT 2023
+Finished loading mountain Second mountain from file.  
+Tue Apr 04 15:39:09 PDT 2023
+Lift ticket price added.  
+Tue Apr 04 15:39:09 PDT 2023
+Rentals set to not available.  
+Tue Apr 04 15:39:09 PDT 2023
+Distance to the mountain added.  
+Tue Apr 04 15:39:09 PDT 2023
+Mountain Seymour added to the mountain list.  
+Tue Apr 04 15:39:26 PDT 2023
+City set to Richmond.  
+Tue Apr 04 15:39:37 PDT 2023
+Distance to the mountain added.
+
 
 ## References
 [JsonSerializationDemo](https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo) was adapted as the basis for 
-the persistence module of this app.
+the persistence module of this app.  
+Event and EventLog classes and related test classes were adapted from
+[AlarmSystem](https://github.students.cs.ubc.ca/CPSC210/AlarmSystem).

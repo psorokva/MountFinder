@@ -1,8 +1,6 @@
 package ui;
 
-import model.Mountain;
-import model.MountainList;
-import model.User;
+import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -18,7 +16,7 @@ import java.util.Scanner;
  * the distance to the mountain from there.
  * - User can quit application by selecting "q" command.
  */
-public class MountFinderApp {
+public class MountFinderApp implements LogPrinter {
     private static final String JSON_STORE = "./data/mountainInfo.json";
     private MountainList mtnList;
     private Scanner input;
@@ -114,6 +112,7 @@ public class MountFinderApp {
                 break;
             case "q":
                 askToSaveMenu();
+                printLog();
                 break;
             default:
                 processCommand3(command);
@@ -380,5 +379,16 @@ public class MountFinderApp {
 
     public String[] getCities() {
         return cities;
+    }
+
+    /**
+     * Prints the log of events
+     * Adapted from <a href="https://github.students.cs.ubc.ca/CPSC210/AlarmSystem">...</a>
+     */
+    @Override
+    public void printLog() {
+        for (Event next : EventLog.getInstance()) {
+            System.out.println(next);
+        }
     }
 }

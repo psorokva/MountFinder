@@ -39,6 +39,7 @@ public class Mountain implements Writable {
     public void makeRentalsAvailable() {
         this.gearRental = true;
         rentalAvailabilityAnswer = "Rentals are available";
+        EventLog.getInstance().logEvent(new Event("Rentals set to available."));
     }
 
     // MODIFIES: this
@@ -46,6 +47,7 @@ public class Mountain implements Writable {
     public void makeRentalsNotAvailable() {
         this.gearRental = false;
         rentalAvailabilityAnswer = "Rentals are not available";
+        EventLog.getInstance().logEvent(new Event("Rentals set to not available."));
     }
 
     // EFFECTS: returns the availability of gear rental
@@ -58,6 +60,7 @@ public class Mountain implements Writable {
     // EFFECTS: adds value for the lift price in dollars
     public void addLiftPrice(double liftPrice) {
         this.liftPrice = liftPrice;
+        EventLog.getInstance().logEvent(new Event("Lift ticket price added."));
     }
 
     // EFFECTS: returns lift ticket price in dollars

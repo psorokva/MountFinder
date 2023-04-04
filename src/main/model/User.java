@@ -17,6 +17,7 @@ public class User {
     // EFFECTS: sets user's home city to one of the available options
     public void setUserHomeCity(String city) {
         this.userHomeCity = city;
+        EventLog.getInstance().logEvent(new Event("City set to " + this.userHomeCity + "."));
     }
 
     public String getUserHomeCity() {

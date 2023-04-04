@@ -1,8 +1,6 @@
 package persistence;
 
-import model.Distance;
-import model.Mountain;
-import model.MountainList;
+import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -82,6 +80,7 @@ public class JsonReader {
         mountain.setDistances(distances);
 
         ml.addMountain(mountain);
+        EventLog.getInstance().logEvent(new Event("Finished loading mountain " + name + " from file."));
     }
 
     // MODIFIES: ml

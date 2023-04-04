@@ -5,7 +5,8 @@ import java.util.Date;
 
 
 /**
- * Represents an alarm system event.
+ * Represents a MountFinder system event.
+ * Adapted from <a href="https://github.students.cs.ubc.ca/CPSC210/AlarmSystem">...</a>
  */
 public class Event {
     private static final int HASH_CONSTANT = 13;

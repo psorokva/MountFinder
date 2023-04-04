@@ -3,7 +3,6 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,7 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for the Event class
+ * Unit tests for the Event class.
+ * Adapted from <a href="https://github.students.cs.ubc.ca/CPSC210/AlarmSystem">...</a>
  */
 public class EventTest {
     private Event e;
@@ -31,8 +31,8 @@ public class EventTest {
     @Test
     public void testEvent() {
         assertEquals("New Mountain added", e.getDescription());
-        assertTrue((d.getTime() - e.getDate().getTime()) < 1000 || (e.getDate().getTime() - d.getTime()) < 1000 );
-       // assertEquals(d, e.getDate());
+        assertTrue((d.getTime() - e.getDate().getTime()) < 1000 || (e.getDate().getTime() - d.getTime()) < 1000);
+        // assertEquals(d, e.getDate());
     }
 
     @Test

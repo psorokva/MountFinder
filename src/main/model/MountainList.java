@@ -31,6 +31,8 @@ public class MountainList implements Writable {
     // EFFECTS: adds given mountain to existing list
     public void addMountain(Mountain m) {
         this.mtnList.add(m);
+        EventLog.getInstance().logEvent(
+                new Event("Mountain " + m.getMtnName() + " added to the mountain list."));
     }
 
     // REQUIRES: mountain list is not empty

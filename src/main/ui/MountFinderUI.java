@@ -13,6 +13,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +60,7 @@ public class MountFinderUI extends JFrame {
 
     /**
      * Constructor sets up MountFinderUI starting screen.
+     * includes WindowAdapter implementation following: <a href="https://stackoverflow.com/a/16296053">...</a>
      */
     public MountFinderUI() {
         super("MountFinder App");
@@ -76,6 +79,14 @@ public class MountFinderUI extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setLocationRelativeTo(null);
+
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mfApp.printLog();
+            }
+        });
     }
 
     // MODIFIES: this
@@ -127,7 +138,6 @@ public class MountFinderUI extends JFrame {
                 mainMenuVisible = true;
                 mtnListVisible = true;
             }
-//            remove(mountainDetailsPanel);
             // if city is unselected
         } else {
             if (mainMenuVisible) {
@@ -136,7 +146,6 @@ public class MountFinderUI extends JFrame {
                 mainMenuVisible = false;
                 mtnListVisible = false;
             }
-//            removeOtherPanels();
         }
         removeOtherPanels();
         repaint();
