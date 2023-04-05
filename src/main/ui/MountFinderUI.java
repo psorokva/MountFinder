@@ -184,7 +184,7 @@ public class MountFinderUI extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: created form fields for adding new mountain
-    @SuppressWarnings("methodlength") //Todo ask if ok
+    @SuppressWarnings("methodlength")
     private void showAddNewMountainMenu() {
         tablePanel = new JPanel();
         tablePanel.setLayout(new GridLayout(5, 1));

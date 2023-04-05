@@ -31,8 +31,8 @@ public class EventTest {
     @Test
     public void testEvent() {
         assertEquals("New Mountain added", e.getDescription());
-        assertTrue((d.getTime() - e.getDate().getTime()) < 1000 || (e.getDate().getTime() - d.getTime()) < 1000);
-        // assertEquals(d, e.getDate());
+        assertTrue((d.getTime() - e.getDate().getTime()) < 1000
+                || (e.getDate().getTime() - d.getTime()) < 1000);
     }
 
     @Test
