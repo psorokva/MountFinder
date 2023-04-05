@@ -45,7 +45,6 @@ public class MountFinderUI extends JFrame {
     private JTextField mtnDistanceField;
     private JTextField newMtnDistanceField;
     private JFrame checkBoxFrame;
-
     private final MountFinderApp mfApp;
     private final User user;
     private Mountain mountain;
