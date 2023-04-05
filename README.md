@@ -99,6 +99,7 @@ Tue Apr 04 15:39:37 PDT 2023
 Distance to the mountain added.
 
 ### Phase 4: Task 3 
+[UML_Design_Diagram](https://github.students.cs.ubc.ca/CPSC210-2022W-T2/project_t5t1f/blob/main/UML_Design_Diagram.jpg)
 #### Refactoring:
 - After drawing the diagram, I realized that I could potentially reduce the number of associations
 with User, Mountain and MountainList classes. If I had more time to refactor my project I would
