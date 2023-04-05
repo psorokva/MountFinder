@@ -98,6 +98,22 @@ City set to Richmond.
 Tue Apr 04 15:39:37 PDT 2023
 Distance to the mountain added.
 
+### Phase 4: Task 3 
+#### Refactoring:
+- After drawing the diagram, I realized that I could potentially reduce the number of associations
+with User, Mountain and MountainList classes. If I had more time to refactor my project I would
+try to remove MountainList class and instead keep a list of all Mountains in some other class, 
+potentially in Mountain class.
+- I would also isolate all behaviour related to interacting with console out of MountFinderApp
+and move it to a separate class MountFinderConsole. Then both MountFinderConsole and MountFinderUI
+would only be responsible for displaying information and would only have association with MountFinderApp 
+and not with MountainList or Mountain.
+- After learning about Observer Pattern, I would like to implement it to simplify interactions between classes.
+For example, instead of directly refreshing UI components everytime a new mountain is added to the list,
+any change related to MountainList would notify observers and the UI would know to update it's state.
+- If possible, I would also like to use Observer to trigger reminder to save the state of application
+before quitting only if changes to the MountainList were made while running the app. If there were 
+no changes to the list, there would be no reminder to save.
 
 ## References
 [JsonSerializationDemo](https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo) was adapted as the basis for 
