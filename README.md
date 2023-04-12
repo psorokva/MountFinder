@@ -35,16 +35,7 @@
 3. Select "Add new mountain" option
 4. Fill out the form and select "Save mountain". This will add a new mountain to the list.
 
-### To compare two mountains (the second required action):
-1. Start the application by running Main
-2. Select a city from the dropdown (Vancouver) and click "Ok"
-3. Add at least 2 mountains through "Add new mountain" option or select "Load list from file"
-4. Select "Compare two mountains"
-5. In the new window, select 2 mountains that you want to compare and click "Compare"
-- *This will display information of 2 mountains side by side and if price and distance values are
-not equal, will change the font to red for higher value and green for lower value.*
-
-### To enter distance to mountain from different city (another action):
+### To enter distance to mountain from different city (the second required action):
 1. Start the application by running Main
 2. Select a city from the dropdown (Vancouver) and click "Ok"
 3. Add a new mountain through "Add new mountain" option or select "Load list from file"
@@ -52,7 +43,16 @@ not equal, will change the font to red for higher value and green for lower valu
 5. Change to a different city in the dropdown and click "Ok"
 6. Open the same mountain
 - *If this mountain already has a distance entered for new city, it will display the new distance.
-If distance was not previously saved, it will display a new field where it can be entered and saved.*
+  If distance was not previously saved, it will display a new field where it can be entered and saved.*
+
+### To compare two mountains (another action):
+1. Start the application by running Main
+2. Select a city from the dropdown (Vancouver) and click "Ok"
+3. Add at least 2 mountains through "Add new mountain" option or select "Load list from file"
+4. Select "Compare two mountains"
+5. In the new window, select 2 mountains that you want to compare and click "Compare"
+- *This will display information of 2 mountains side by side and if price and distance values are
+not equal, will change the font to red for higher value and green for lower value.*
 
 ### Visual component:
 - Visual component is visible after adding new mountain in the Success pop-up.
@@ -64,6 +64,12 @@ If distance was not previously saved, it will display a new field where it can b
 1. Select "Load list from file" option in the menu.
 
 ### Phase 4: Task 2
+#### Key events related to two actions:
+1) "Mountain ___ added to the mountain list." Events related to adding mountain details
+are also logged.
+2) "City set to ___." and "Distance to the mountain added."
+
+#### Sample:
 Tue Apr 04 15:38:43 PDT 2023 City set to Vancouver.  
 Tue Apr 04 15:38:45 PDT 2023 
 Distance to the mountain added.  
@@ -107,7 +113,7 @@ potentially in Mountain class.
 - I would also isolate all behaviour related to interacting with console out of MountFinderApp
 and move it to a separate class MountFinderConsole. Then both MountFinderConsole and MountFinderUI
 would only be responsible for displaying information and would only have association with MountFinderApp 
-and not with MountainList or Mountain.
+and not with MountainList or Mountain. MountFinderApp would be responsible only for functionality.
 - After learning about Observer Pattern, I would like to implement it to simplify interactions between classes.
 For example, instead of directly refreshing UI components everytime a new mountain is added to the list,
 any change related to MountainList would notify observers and the UI would know to update it's state.

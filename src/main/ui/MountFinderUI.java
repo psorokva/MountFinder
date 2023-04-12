@@ -59,7 +59,7 @@ public class MountFinderUI extends JFrame {
 
 
     /**
-     * Constructor sets up MountFinderUI starting screen.
+     * EFFECTS: constructor sets up MountFinderUI starting screen.
      * includes WindowAdapter implementation following: <a href="https://stackoverflow.com/a/16296053">...</a>
      */
     public MountFinderUI() {
@@ -82,6 +82,7 @@ public class MountFinderUI extends JFrame {
 
         addWindowListener(new WindowAdapter() {
 
+            // EFFECTS: prints a log of events to console when program is closed
             @Override
             public void windowClosing(WindowEvent e) {
                 mfApp.printLog();
@@ -306,7 +307,7 @@ public class MountFinderUI extends JFrame {
 
         // MODIFIES: this
         // EFFECTS: calls method to display current mountain list if it's not already visible
-        //          removed other unnecessary panels
+        //          removes other unnecessary panels
         @Override
         public void actionPerformed(ActionEvent evt) {
             removeOtherPanels();

@@ -41,6 +41,8 @@ public class MountFinderApp implements LogPrinter {
 //        startConsole();
     }
 
+    // MODIFIES: this
+    // EFFECTS: opens console window and processes input
     private void startConsole() {
         keepGoing = true;
         String command;
@@ -382,7 +384,7 @@ public class MountFinderApp implements LogPrinter {
     }
 
     /**
-     * Prints the log of events
+     * EFFECTS: Prints the log of events
      * Adapted from <a href="https://github.students.cs.ubc.ca/CPSC210/AlarmSystem">...</a>
      */
     @Override
