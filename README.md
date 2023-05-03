@@ -28,7 +28,7 @@
 - As a user, I want to have the option to save my mountain list and to be reminded to save before quitting
 - As a user, I want to be given the option to load my mountain list from file
 
-# Instructions for Grader
+# Instructions:
 ### To add new mountains to the mountain list (the first required action):
 1. Start the application by running Main
 2. Select a city from the dropdown (Vancouver) and click "Ok"
@@ -54,22 +54,13 @@
 - *This will display information of 2 mountains side by side and if price and distance values are
 not equal, will change the font to red for higher value and green for lower value.*
 
-### Visual component:
-- Visual component is visible after adding new mountain in the Success pop-up.
-
 ### To save the state of the application to file:
 - Select "Save list to file" option in the menu.
 
 ### To load the state of the application from file:
 1. Select "Load list from file" option in the menu.
 
-### Phase 4: Task 2
-#### Key events related to two actions:
-1) "Mountain ___ added to the mountain list." Events related to adding mountain details
-are also logged.
-2) "City set to ___." and "Distance to the mountain added."
-
-#### Sample:
+#### Sample log of events:
 Tue Apr 04 15:38:43 PDT 2023 City set to Vancouver.  
 Tue Apr 04 15:38:45 PDT 2023 
 Distance to the mountain added.  
@@ -104,8 +95,6 @@ City set to Richmond.
 Tue Apr 04 15:39:37 PDT 2023
 Distance to the mountain added.
 
-### Phase 4: Task 3 
-[UML_Design_Diagram](https://github.students.cs.ubc.ca/CPSC210-2022W-T2/project_t5t1f/blob/main/UML_Design_Diagram.jpg)
 
 #### Refactoring:
 - After drawing the diagram, I realized that I could potentially reduce the number of associations
@@ -125,6 +114,6 @@ no changes to the list, there would be no reminder to save.
 
 ## References
 [JsonSerializationDemo](https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo) was adapted as the basis for 
-the persistence module of this app.  
+the persistence module of this app.
 Event and EventLog classes and related test classes were adapted from
 [AlarmSystem](https://github.students.cs.ubc.ca/CPSC210/AlarmSystem).
